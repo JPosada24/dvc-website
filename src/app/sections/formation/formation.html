@@ -4,7 +4,7 @@
     <p class="intro">{{ intro() }}</p>
 
     <!-- La cancha: la red va arriba, la fila de arriba está junto a ella y la línea punteada es la de ataque. -->
-    <div class="net" aria-hidden="true"><span>Red</span></div>
+    <div class="net" aria-hidden="true"></div>
     <ol class="court">
       @for (z of zonas(); track z.n; let i = $index) {
         <li class="zone" [class.front]="i < 3" [attr.aria-label]="'Zona ' + z.n + ': ' + z.titulo">

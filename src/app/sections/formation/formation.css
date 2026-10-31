@@ -7,13 +7,12 @@
 
 /* Título y, debajo, el texto de entrada. */
 .title { max-width: 6.8em; font-family: var(--font-display); font-size: clamp(44px, 7.5vw, 96px); text-transform: uppercase; line-height: 0.9; letter-spacing: 0.01em; }
-.intro { margin-top: 24px; max-width: 34rem; font-size: 17px; line-height: 1.6; color: var(--muted-foreground); }
+.intro { margin-top: 24px; max-width: none; font-size: 17px; line-height: 1.6; color: var(--muted-foreground); }
 
 /* La red sobre la cancha: así se reconoce que es una cancha de voleibol. */
-.net { position: relative; margin-top: 48px; height: 14px; border: 2px solid rgba(245, 241, 236, 0.75);
+.net { margin-top: 48px; height: 14px; border: 2px solid rgba(245, 241, 236, 0.75);
   background: repeating-linear-gradient(90deg, rgba(245, 241, 236, 0.28) 0 1px, transparent 1px 8px),
     repeating-linear-gradient(0deg, rgba(245, 241, 236, 0.28) 0 1px, transparent 1px 5px); }
-.net span { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); padding: 0 10px; background: var(--background); font-size: 10px; font-weight: 700; letter-spacing: 0.3em; text-transform: uppercase; color: var(--muted-foreground); }
 @media (min-width: 640px) { .net { margin-top: 56px; } }
 
 /* La cancha: 3 columnas × 2 filas, arriba junto a la red y abajo el fondo. */
