@@ -1,20 +1,54 @@
 .section { border-top: 1px solid rgba(255, 255, 255, 0.08); }
 .title { margin-top: 16px; }
 
-/* Tarjetas de álbum */
-.albums { list-style: none; margin-top: 48px; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr)); gap: 20px; }
-.album { display: grid; gap: 8px; width: 100%; padding: 0; border: 0; background: none; color: inherit; font: inherit; text-align: left; cursor: pointer; }
-.cover { position: relative; display: block; aspect-ratio: 4 / 3; overflow: hidden; border: 1px solid rgba(217, 84, 0, 0.3); background: var(--card); }
-.cover img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease, filter 0.4s ease; filter: saturate(0.9); }
-.cover::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to top, rgba(3, 6, 12, 0.55), transparent 45%); }
-.badge { position: absolute; z-index: 1; right: 12px; bottom: 10px; font-size: 11px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--foreground); }
-.album-name { font-family: var(--font-display); font-size: 22px; text-transform: uppercase; line-height: 1.05; transition: color 0.2s; }
-.album-date { font-size: 13px; color: var(--muted-foreground); }
-@media (hover: hover) {
-  .album:hover .cover img { transform: scale(1.05); filter: saturate(1.1); }
-  .album:hover .album-name { color: var(--accent); }
+/* Tarjetas de álbum: pilas de fotos; con 3 o más, el primero (más reciente) va destacado */
+.albums { list-style: none; margin-top: 56px; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr)); gap: 36px 28px; }
+@media (min-width: 768px) {
+  .albums[data-n="1"] { grid-template-columns: 1fr; }
+  .albums[data-n="1"] .cover { aspect-ratio: 21 / 9; }
+  .albums[data-n="2"] { grid-template-columns: 1fr 1fr; }
 }
-.album:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+@media (min-width: 900px) {
+  .albums[data-n="varios"] { grid-template-columns: repeat(3, 1fr); }
+  .destacado { grid-column: span 2; grid-row: span 2; }
+  .destacado .album, .destacado .pila, .destacado .cover { height: 100%; }
+  .destacado .cover { aspect-ratio: auto; }
+}
+.album { display: block; width: 100%; padding: 0; border: 0; background: none; color: inherit; font: inherit; text-align: left; cursor: pointer; }
+.album:focus-visible { outline: 2px solid var(--accent); outline-offset: 10px; }
+
+/* Dos hojas detrás de la portada insinúan que es un álbum */
+.pila { position: relative; display: block; isolation: isolate; }
+.pila::before, .pila::after { content: ""; position: absolute; inset: 0; z-index: -1; border: 1px solid rgba(247, 127, 0, 0.22); background: var(--card); transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1); }
+.pila::before { transform: rotate(-3deg) translate(-5px, 6px); }
+.pila::after { transform: rotate(2deg) translate(6px, 3px); background: #0d121c; }
+
+.cover { position: relative; display: block; aspect-ratio: 4 / 3; overflow: hidden; border: 1px solid rgba(217, 84, 0, 0.35); background: var(--card); box-shadow: 0 20px 40px -24px rgba(0, 0, 0, 0.9); }
+.cover img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: saturate(0.85) brightness(0.9); transition: transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1), filter 0.4s ease; }
+.cover::before { content: ""; position: absolute; inset: 0; z-index: 1; background: linear-gradient(to top, rgba(3, 6, 12, 0.92) 0%, rgba(3, 6, 12, 0.35) 45%, rgba(3, 6, 12, 0) 70%); }
+/* Barra de fuego que sube al pasar el mouse */
+.cover::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; z-index: 2; height: 4px; background-image: var(--gradient-fire); transform: scaleX(0); transform-origin: left; transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1); }
+
+.idx { position: absolute; z-index: 2; top: 10px; left: 16px; font-family: var(--font-display); font-size: 44px; line-height: 1; color: transparent; -webkit-text-stroke: 1px rgba(255, 255, 255, 0.55); }
+.grande .idx { font-size: clamp(56px, 7vw, 96px); }
+.info { position: absolute; z-index: 2; left: 18px; right: 18px; bottom: 16px; display: grid; gap: 6px; }
+@media (min-width: 768px) { .grande .info { left: 32px; bottom: 28px; } .grande .idx { left: 30px; top: 18px; } }
+.album-name { font-family: var(--font-display); font-size: 26px; line-height: 1; text-transform: uppercase; letter-spacing: 0.02em; text-shadow: 0 2px 12px rgba(3, 6, 12, 0.7); }
+.grande .album-name { font-size: clamp(30px, 3.6vw, 52px); }
+.meta { font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); }
+.ver { display: inline-flex; align-items: center; gap: 8px; max-height: 0; overflow: hidden; opacity: 0; font-size: 12px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--foreground); transition: max-height 0.35s ease, opacity 0.35s ease, margin 0.35s ease; }
+.ver svg { width: 16px; height: 16px; stroke: currentColor; stroke-width: 2; fill: none; transition: transform 0.35s ease; }
+
+/* En pantallas táctiles «Ver álbum» siempre se ve */
+@media (hover: none) { .ver { max-height: 24px; opacity: 1; margin-top: 4px; } }
+@media (hover: hover) {
+  .album:hover .cover img, .album:focus-visible .cover img { transform: scale(1.07); filter: saturate(1.1) brightness(1); }
+  .album:hover .cover::after, .album:focus-visible .cover::after { transform: scaleX(1); }
+  .album:hover .ver, .album:focus-visible .ver { max-height: 24px; opacity: 1; margin-top: 4px; }
+  .album:hover .ver svg { transform: translateX(4px); }
+  .album:hover .pila::before { transform: rotate(-6deg) translate(-12px, 8px); }
+  .album:hover .pila::after { transform: rotate(4.5deg) translate(12px, 4px); }
+}
 
 /* Álbum abierto */
 .album-head { margin-top: 40px; display: flex; flex-wrap: wrap; align-items: baseline; gap: 10px 20px; }
@@ -57,5 +91,5 @@
 .viewer-actions button:hover, .viewer-actions button:focus-visible { border-color: var(--accent); color: var(--accent); }
 
 @media (prefers-reduced-motion: reduce) {
-  .cover img, .thumb img { transition: none; }
+  .cover img, .thumb img, .pila::before, .pila::after, .cover::after, .ver { transition: none; }
 }

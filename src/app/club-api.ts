@@ -91,6 +91,11 @@ export class ClubApi {
     return this.foto(a.fotos[0]!, 'mini');
   }
 
+  /** Portada a tamaño grande (álbum destacado y carrusel de la portada): la propia (1200 px) o la primera foto. */
+  portadaGrande(a: Album): string {
+    return a.portada && /^[0-9a-f]{8}$/.test(a.portada) ? this.portadaAlbum(a) : this.foto(a.fotos[0]!, 'grande');
+  }
+
   /** Foto de un entrenador; ?v= cambia con cada foto nueva, así la caché del navegador no muestra la vieja. */
   fotoIntegrante(i: Integrante): string | null {
     return i.foto && /^[0-9a-f]{8}$/.test(i.foto)

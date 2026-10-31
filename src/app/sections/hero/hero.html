@@ -17,9 +17,13 @@
       </div>
     </div>
     <div class="hero-media">
-      <div class="hero-frame">
-        <div class="skewbox">
-          <picture>
+      <div class="hero-frame" [class.carrusel]="total() > 1" [class.detenido]="detenido()"
+           (mouseenter)="encimaDe(true)" (mouseleave)="encimaDe(false)"
+           (focusin)="encimaDe(true)" (focusout)="encimaDe(false)">
+        <div class="skewbox" [attr.role]="total() > 1 ? 'region' : null"
+             [attr.aria-roledescription]="total() > 1 ? 'carrusel' : null"
+             [attr.aria-label]="total() > 1 ? 'Fotos del club' : null">
+          <picture class="slide" [class.activa]="actual() === 0">
             <source
               type="image/webp"
               srcset="img/equipo-600.webp 600w, img/equipo-800.webp 800w, img/equipo-1280.webp 1280w, img/equipo-1920.webp 1920w"
@@ -35,10 +39,42 @@
               fetchpriority="high"
             />
           </picture>
+          @for (d of extra(); track d.src; let i = $index) {
+            <div class="slide capa" [class.activa]="actual() === i + 1">
+              @if (cargada(i + 1)) { <img [src]="d.src" alt="" decoding="async" /> }
+            </div>
+          }
+          @if (total() > 1) {
+            <p class="slide-caption" aria-live="polite">
+              <span class="slide-num">{{ num(actual()) }}</span>{{ titulo() }}
+            </p>
+          }
         </div>
         <div class="corner-tr" aria-hidden="true"></div>
         <div class="corner-bl" aria-hidden="true"></div>
       </div>
+      @if (total() > 1) {
+        <div class="carousel-bar">
+          <button type="button" class="pause" (click)="alternarPausa()"
+                  [attr.aria-label]="pausado() ? 'Reanudar el carrusel' : 'Pausar el carrusel'">
+            @if (pausado()) {
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>
+            } @else {
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5h4v14H7zM13 5h4v14h-4z" /></svg>
+            }
+          </button>
+          <div class="dots">
+            @for (i of indices(); track i) {
+              <button type="button" class="dot" [class.activa]="i === actual()" (click)="ir(i)"
+                      [attr.aria-label]="'Ver foto ' + (i + 1) + ' de ' + total()"
+                      [attr.aria-current]="i === actual() ? 'true' : null">
+                @if (i === actual()) { <span class="fill" (animationend)="siguiente()"></span> }
+              </button>
+            }
+          </div>
+          <span class="counter">{{ num(actual()) }} <span>/ {{ num(total() - 1) }}</span></span>
+        </div>
+      }
     </div>
   </div>
 </section>

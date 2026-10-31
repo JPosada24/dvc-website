@@ -21,18 +21,27 @@
           }
         </div>
       } @else {
-        <!-- Todos los álbumes: una tarjeta por álbum, con su primera foto de portada -->
+        <!-- Todos los álbumes como pilas de fotos: uno = panorámico, dos = lado a lado, tres o más = el primero destacado -->
         @if (albumes().length) {
-          <ul class="albums">
-            @for (a of albumes(); track a.id) {
-              <li>
+          <ul class="albums" [attr.data-n]="albumes().length < 3 ? albumes().length : 'varios'">
+            @for (a of albumes(); track a.id; let i = $index; let primero = $first) {
+              <li [class.destacado]="primero && albumes().length >= 3" [class.grande]="primero || albumes().length < 3">
                 <button type="button" class="album" (click)="abrirAlbum(a)" [attr.aria-label]="'Abrir álbum ' + a.nombre">
-                  <span class="cover">
-                    <img [src]="api.portadaAlbum(a)" alt="" loading="lazy" decoding="async" />
-                    <span class="badge">{{ a.fotos.length }} {{ a.fotos.length === 1 ? 'foto' : 'fotos' }}</span>
+                  <span class="pila">
+                    <span class="cover">
+                      <img [src]="primero || albumes().length < 3 ? api.portadaGrande(a) : api.portadaAlbum(a)" alt="" loading="lazy" decoding="async" />
+                      <span class="idx" aria-hidden="true">{{ i < 9 ? '0' : '' }}{{ i + 1 }}</span>
+                      <span class="info">
+                        <span class="album-name">{{ a.nombre }}</span>
+                        <span class="meta">
+                          {{ a.fotos.length }} {{ a.fotos.length === 1 ? 'foto' : 'fotos' }}@if (a.fecha) { · {{ fecha(a.fecha).texto }} }
+                        </span>
+                        <span class="ver" aria-hidden="true">Ver álbum
+                          <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+                        </span>
+                      </span>
+                    </span>
                   </span>
-                  <span class="album-name">{{ a.nombre }}</span>
-                  @if (a.fecha) { <span class="album-date">{{ fecha(a.fecha).texto }}</span> }
                 </button>
               </li>
             }
