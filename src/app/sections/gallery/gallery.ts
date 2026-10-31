@@ -1,7 +1,7 @@
 import { Component, ElementRef, computed, inject, signal, viewChild } from '@angular/core';
-import { Album, ClubApi } from '../../club-api';
+import { Album, ClubApi, partesFecha } from '../../club-api';
 
-/** Galería en vivo: solo aparece si la plataforma tiene álbumes o videos publicados. */
+/** Galería en vivo: álbumes como tarjetas; al abrir uno se ven solo sus fotos. Sin datos de la plataforma no aparece. */
 @Component({
   selector: 'app-gallery',
   templateUrl: './gallery.html',
@@ -11,17 +11,38 @@ import { Album, ClubApi } from '../../club-api';
 export class Gallery {
   protected readonly api = inject(ClubApi);
   private readonly visor = viewChild<ElementRef<HTMLDialogElement>>('visor');
+  private readonly seccion = viewChild<ElementRef<HTMLElement>>('seccion');
 
   protected readonly albumes = computed(() => this.api.datos()?.albumes ?? []);
   protected readonly videos = computed(() => this.api.datos()?.videos ?? []);
-  protected readonly abierto = signal<{ album: Album; indice: number } | null>(null);
+  /** Álbum abierto (null = se ven las tarjetas de todos). */
+  protected readonly album = signal<Album | null>(null);
+  /** Foto ampliada en el visor (índice dentro del álbum abierto). */
+  protected readonly indice = signal<number | null>(null);
   protected readonly foto = computed(() => {
-    const a = this.abierto();
-    return a ? (a.album.fotos[a.indice] ?? null) : null;
+    const a = this.album();
+    const i = this.indice();
+    return a && i !== null ? (a.fotos[i] ?? null) : null;
   });
+  protected readonly fecha = partesFecha;
 
-  protected abrir(album: Album, indice: number): void {
-    this.abierto.set({ album, indice });
+  protected abrirAlbum(a: Album): void {
+    this.album.set(a);
+    this.alInicio();
+  }
+
+  protected volver(): void {
+    this.album.set(null);
+    this.alInicio();
+  }
+
+  /** Al cambiar de vista se vuelve al inicio de la sección (si no, quedaría a mitad de página). */
+  private alInicio(): void {
+    this.seccion()?.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  protected ampliar(i: number): void {
+    this.indice.set(i);
     this.visor()?.nativeElement.showModal();
   }
 
@@ -30,10 +51,9 @@ export class Gallery {
   }
 
   protected mover(paso: number): void {
-    this.abierto.update((a) => {
-      if (!a) return a;
-      const total = a.album.fotos.length;
-      return { ...a, indice: (a.indice + paso + total) % total };
-    });
+    const a = this.album();
+    const i = this.indice();
+    if (!a || i === null || !this.visor()?.nativeElement.open) return;
+    this.indice.set((i + paso + a.fotos.length) % a.fotos.length);
   }
 }

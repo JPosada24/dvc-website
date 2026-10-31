@@ -1,48 +1,68 @@
 @if (albumes().length || videos().length) {
-  <section id="galeria" class="section">
+  <section #seccion id="galeria" class="section">
     <div class="wrap">
       <span class="kicker">Dentro y fuera de la cancha</span>
       <h2 class="section-title title">Galería <span class="text-fire">Dragones</span></h2>
 
-      @for (a of albumes(); track a.id) {
-        <div class="album">
+      @if (album(); as a) {
+        <!-- Un álbum abierto: solo sus fotos -->
+        <div class="album-head">
+          <button type="button" class="back" (click)="volver()">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6" /></svg> Todos los álbumes
+          </button>
           <h3>{{ a.nombre }}</h3>
-          <div class="grid">
-            @for (f of a.fotos; track f.id; let i = $index) {
-              <button type="button" class="thumb" [class.lead]="i === 0" (click)="abrir(a, i)"
-                      [attr.aria-label]="'Ver foto ' + (i + 1) + ' de ' + a.nombre">
-                <img [src]="api.foto(f, 'mini')" alt="" loading="lazy" decoding="async" [attr.width]="f.ancho" [attr.height]="f.alto" />
-              </button>
-            }
-          </div>
+          <span class="count">{{ a.fotos.length }} {{ a.fotos.length === 1 ? 'foto' : 'fotos' }}@if (a.fecha) { · {{ fecha(a.fecha).texto }} }</span>
         </div>
-      }
-
-      @if (videos().length) {
-        <div class="videos">
-          @for (v of videos(); track v.id) {
-            <a class="video" [href]="api.enlaceVideo(v)" target="_blank" rel="noopener noreferrer">
-              <span class="poster">
-                <img [src]="api.miniaturaVideo(v)" alt="" loading="lazy" referrerpolicy="no-referrer" />
-                <span class="play" aria-hidden="true">
-                  <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
-                </span>
-              </span>
-              <span class="video-title">{{ v.titulo }}</span>
-            </a>
+        <div class="grid">
+          @for (f of a.fotos; track f.id; let i = $index) {
+            <button type="button" class="thumb" (click)="ampliar(i)" [attr.aria-label]="'Ver foto ' + (i + 1) + ' de ' + a.fotos.length">
+              <img [src]="api.foto(f, 'mini')" alt="" loading="lazy" decoding="async" [attr.width]="f.ancho" [attr.height]="f.alto" />
+            </button>
           }
         </div>
+      } @else {
+        <!-- Todos los álbumes: una tarjeta por álbum, con su primera foto de portada -->
+        @if (albumes().length) {
+          <ul class="albums">
+            @for (a of albumes(); track a.id) {
+              <li>
+                <button type="button" class="album" (click)="abrirAlbum(a)" [attr.aria-label]="'Abrir álbum ' + a.nombre">
+                  <span class="cover">
+                    <img [src]="api.foto(a.fotos[0]!, 'mini')" alt="" loading="lazy" decoding="async" />
+                    <span class="badge">{{ a.fotos.length }} {{ a.fotos.length === 1 ? 'foto' : 'fotos' }}</span>
+                  </span>
+                  <span class="album-name">{{ a.nombre }}</span>
+                  @if (a.fecha) { <span class="album-date">{{ fecha(a.fecha).texto }}</span> }
+                </button>
+              </li>
+            }
+          </ul>
+        }
+
+        @if (videos().length) {
+          <div class="videos">
+            @for (v of videos(); track v.id) {
+              <a class="video" [href]="api.enlaceVideo(v)" target="_blank" rel="noopener noreferrer">
+                <span class="poster">
+                  <img [src]="api.miniaturaVideo(v)" alt="" loading="lazy" referrerpolicy="no-referrer" />
+                  <span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg></span>
+                </span>
+                <span class="video-title">{{ v.titulo }}</span>
+              </a>
+            }
+          </div>
+        }
       }
     </div>
 
-    <dialog #visor class="viewer" aria-label="Foto ampliada" (close)="abierto.set(null)">
+    <dialog #visor class="viewer" aria-label="Foto ampliada" (close)="indice.set(null)">
       @if (foto(); as f) {
         <img [src]="api.foto(f, 'grande')" [attr.width]="f.ancho" [attr.height]="f.alto"
-             [alt]="'Foto ' + (abierto()!.indice + 1) + ' de ' + abierto()!.album.nombre" />
+             [alt]="'Foto ' + (indice()! + 1) + ' de ' + album()!.nombre" />
         <div class="viewer-bar">
-          <span>{{ abierto()!.album.nombre }} · {{ abierto()!.indice + 1 }}/{{ abierto()!.album.fotos.length }}</span>
+          <span>{{ album()!.nombre }} · {{ indice()! + 1 }}/{{ album()!.fotos.length }}</span>
           <div class="viewer-actions">
-            @if (abierto()!.album.fotos.length > 1) {
+            @if (album()!.fotos.length > 1) {
               <button type="button" (click)="mover(-1)" aria-label="Foto anterior">‹</button>
               <button type="button" (click)="mover(1)" aria-label="Foto siguiente">›</button>
             }
