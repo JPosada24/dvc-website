@@ -2,6 +2,9 @@
   <div class="wrap">
     <h2 class="section-title">Más que un club, <span class="text-fire">una hermandad</span></h2>
     <div class="title-bar"></div>
+    @if (historia(); as h) {
+      <p class="historia">{{ h }}</p>
+    }
     <div class="pillars">
       @for (pillar of pillars; track pillar.title; let i = $index) {
         <div class="pillar">
@@ -13,5 +16,15 @@
         </div>
       }
     </div>
+    @if (proposito().length) {
+      <div class="proposito">
+        @for (p of proposito(); track p.title) {
+          <blockquote>
+            <span class="kicker">{{ p.title }}</span>
+            <p>{{ p.text }}</p>
+          </blockquote>
+        }
+      </div>
+    }
   </div>
 </section>

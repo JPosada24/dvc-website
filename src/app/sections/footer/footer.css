@@ -5,3 +5,6 @@ footer { border-top: 1px solid rgba(255, 255, 255, 0.08); }
 .footer-brand span { font-family: var(--font-display); text-transform: uppercase; }
 @media (max-width: 639px) { .footer-inner { flex-direction: column; text-align: center; } }
 .footer-copy { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.2em; }
+.footer-links { list-style: none; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 20px; }
+.footer-links a { font-weight: 600; color: var(--foreground); transition: color 0.2s; }
+.footer-links a:hover, .footer-links a:focus-visible { color: var(--accent); }

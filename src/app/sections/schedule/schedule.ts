@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
+import { ClubApi } from '../../club-api';
 
 /** Escala de la línea de tiempo: de 6 p. m. a 10 p. m. */
 const DESDE = 18;
@@ -26,6 +27,10 @@ const barra = (start: number, end: number) => ({
   styleUrl: './schedule.css',
 })
 export class Schedule {
+  private readonly api = inject(ClubApi);
+  /** Sede del panel (Perfil del club), si está. */
+  protected readonly sede = computed(() => this.api.datos()?.perfil?.sede ?? null);
+
   /** Los dos niveles entrenan los mismos días: se muestran una sola vez. */
   protected readonly days = [
     { short: 'Lun', long: 'Lunes' },

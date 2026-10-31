@@ -9,3 +9,8 @@
 .pillar .inner { position: relative; z-index: 10; }
 .pillar h3 { font-family: var(--font-display); font-size: 24px; text-transform: uppercase; letter-spacing: 0.02em; }
 .pillar p { margin-top: 16px; color: var(--muted-foreground); }
+.historia { margin-top: 32px; max-width: 46rem; font-size: 18px; line-height: 1.7; color: var(--muted-foreground); white-space: pre-line; }
+.proposito { margin-top: 72px; display: grid; gap: 1px; border: 1px solid rgba(255, 255, 255, 0.15); background: rgba(255, 255, 255, 0.15); }
+@media (min-width: 768px) { .proposito { grid-template-columns: repeat(auto-fit, minmax(0, 1fr)); } }
+.proposito blockquote { padding: 28px 28px 30px; background: var(--card); border-left: 4px solid var(--primary); }
+.proposito p { margin-top: 12px; font-size: 17px; line-height: 1.65; white-space: pre-line; }

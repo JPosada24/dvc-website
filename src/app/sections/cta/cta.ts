@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
-import { WHATSAPP_URL } from '../../contact';
+import { Component, computed, inject } from '@angular/core';
+import { ClubApi, numeroWhatsApp } from '../../club-api';
+import { WHATSAPP_URL, enlaceWhatsApp } from '../../contact';
 
 @Component({
   selector: 'app-cta',
@@ -7,5 +8,10 @@ import { WHATSAPP_URL } from '../../contact';
   styleUrl: './cta.css',
 })
 export class Cta {
-  protected readonly whatsappUrl = WHATSAPP_URL;
+  private readonly api = inject(ClubApi);
+  /** El número del panel (Perfil del club) si está; si no, el fijo del sitio. */
+  protected readonly whatsappUrl = computed(() => {
+    const numero = numeroWhatsApp(this.api.datos()?.perfil?.whatsapp);
+    return numero ? enlaceWhatsApp(numero) : WHATSAPP_URL;
+  });
 }

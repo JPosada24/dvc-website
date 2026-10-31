@@ -21,7 +21,12 @@ export interface Cifras {
   deportistas_activos: number; femenina: number; masculina: number;
   entrenamientos_semana: number; torneos_anio: number; anios: number | null;
 }
+export interface Perfil {
+  sede: string | null; mision: string | null; vision: string | null; historia: string | null;
+  whatsapp: string | null; correo: string | null; instagram: string | null; facebook: string | null;
+}
 export interface DatosClub {
+  perfil: Perfil | null;
   cifras: Cifras | null; albumes: Album[]; videos: Video[]; equipo: Integrante[]; torneos: Torneo[];
 }
 
@@ -60,6 +65,7 @@ export class ClubApi {
       if (!r.ok) return; // sitio aún no publicado en la plataforma, o caída: queda el contenido fijo
       const d = (await r.json()) as DatosClub;
       this.datos.set({
+        perfil: d.perfil ?? null,
         cifras: d.cifras ?? null,
         albumes: (d.albumes ?? []).filter((a) => a.fotos?.length),
         videos: (d.videos ?? []).filter((v) => ID_YOUTUBE.test(v.youtube_id)),
@@ -115,6 +121,18 @@ export function partesFecha(iso: string): { dia: string; mes: string; texto: str
   const [, m = 1, d = 1] = iso.split('-').map(Number);
   const mes = MESES[m - 1] ?? '';
   return { dia: String(d), mes, texto: `${d} de ${mes}` };
+}
+
+/** WhatsApp del perfil para wa.me: solo dígitos; los celulares colombianos de 10 dígitos llevan el 57. */
+export function numeroWhatsApp(telefono: string | null | undefined): string | null {
+  const digitos = (telefono ?? '').replace(/\D/g, '');
+  if (digitos.length === 10 && digitos.startsWith('3')) return `57${digitos}`;
+  return digitos.length >= 11 && digitos.length <= 15 ? digitos : null;
+}
+
+/** Usuario de red social seguro para armar el enlace (el panel ya lo valida; aquí se vuelve a comprobar). */
+export function usuarioRed(u: string | null | undefined): string | null {
+  return u && /^[A-Za-z0-9._-]{1,60}$/.test(u) ? u : null;
 }
 
 export function pesos(valor: number): string {
