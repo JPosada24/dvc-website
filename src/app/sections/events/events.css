@@ -44,6 +44,7 @@
 .sheet-form .wide { grid-column: 1 / -1; }
 .sheet-form .check { display: flex; gap: 12px; align-items: flex-start; font-size: 14px; font-weight: 400; letter-spacing: normal; text-transform: none; }
 .sheet-form .check input { margin-top: 3px; width: 18px; height: 18px; accent-color: var(--primary); flex-shrink: 0; }
+.sheet-form .check a { color: var(--accent); text-underline-offset: 3px; }
 .trap { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
 .actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 12px; margin-top: 8px; }
 .err { padding: 12px 14px; border-left: 3px solid #ff6b4a; background: rgba(255, 107, 74, 0.1); color: #ffb3a1; }

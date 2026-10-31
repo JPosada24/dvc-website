@@ -4,4 +4,8 @@
     <loc>__SITE_URL__/</loc>
     <lastmod>__BUILD_DATE__</lastmod>
   </url>
+  <url>
+    <loc>__SITE_URL__/politica-de-datos.html</loc>
+    <lastmod>__BUILD_DATE__</lastmod>
+  </url>
 </urlset>
