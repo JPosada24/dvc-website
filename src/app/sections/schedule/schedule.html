@@ -4,14 +4,48 @@
       <span class="kicker">Agenda semanal</span>
       <h2>Horarios nocturnos</h2>
     </div>
-    <ul class="schedule">
-      @for (s of sessions; track $index) {
-        <li>
-          <span class="dia">{{ s.day }}</span>
-          <span class="grupo">{{ s.group }}</span>
-          <span class="hora">{{ s.time }}</span>
-        </li>
-      }
-    </ul>
+
+    <div class="board">
+      <!-- Los días se dicen una sola vez: los dos niveles entrenan los mismos. -->
+      <div class="days">
+        <span class="days-label">Entrenamos</span>
+        <ul>
+          @for (d of days; track d.long) {
+            <li><abbr [attr.title]="d.long">{{ d.short }}</abbr><span class="long">{{ d.long }}</span></li>
+          }
+        </ul>
+      </div>
+
+      <div class="timeline">
+        <div class="scale" aria-hidden="true">
+          @for (h of hours; track h.label) {
+            <span [style.left.%]="h.left">{{ h.label }}<small>p. m.</small></span>
+          }
+        </div>
+
+        <ul class="levels">
+          @for (l of levels; track l.name; let i = $index) {
+            <li class="level" [class.adv]="i === 1">
+              <div class="level-name">
+                <b>{{ l.name }}</b>
+                <span>{{ l.note }}</span>
+              </div>
+              <div class="track">
+                @for (h of hours; track h.label) {
+                  <i class="tick" [style.left.%]="h.left" aria-hidden="true"></i>
+                }
+                <div class="bar" [style.left.%]="l.left" [style.width.%]="l.width">
+                  <span>{{ l.label }}</span>
+                </div>
+              </div>
+            </li>
+          }
+        </ul>
+      </div>
+
+      <p class="foot">
+        De 7 a 8 p. m. coinciden los dos niveles en la cancha. Cada nivel tiene rama femenina y rama masculina.
+      </p>
+    </div>
   </div>
 </section>
