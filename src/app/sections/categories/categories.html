@@ -1,0 +1,19 @@
+<section id="categorias" class="band">
+  <div class="section wrap">
+    <div class="cats-head">
+      <span class="kicker">Programas</span>
+      <h2 class="section-title">Categorías por nivel</h2>
+    </div>
+    <div class="cat-grid">
+      @for (cat of categories; track cat.name; let i = $index) {
+        <article class="cat">
+          <span class="num" aria-hidden="true" [attr.data-num]="'0' + (i + 1)"></span>
+          <p class="nivel">{{ cat.level }}</p>
+          <h3>{{ cat.name }}</h3>
+          <p>{{ cat.text }}</p>
+          <div class="bar"></div>
+        </article>
+      }
+    </div>
+  </div>
+</section>

@@ -1,0 +1,11 @@
+.cta { position: relative; overflow: hidden; padding: 88px 20px; text-align: center; }
+@media (min-width: 640px) { .cta { padding: 128px 24px; } }
+.cta-bg { position: absolute; inset: 0; background-image: var(--gradient-shell); }
+.cta-inner { position: relative; z-index: 10; max-width: 56rem; margin: 0 auto; }
+h2 { font-family: var(--font-display); font-size: clamp(48px, 7vw, 84px); text-transform: uppercase; line-height: 0.95; }
+p { margin: 20px auto 0; max-width: 36rem; font-size: 17px; color: var(--muted-foreground); }
+@media (min-width: 640px) { p { margin-top: 24px; font-size: 18px; } }
+.btn { margin-top: 36px; padding: 18px 28px; }
+@media (min-width: 640px) { .btn { margin-top: 40px; padding: 20px 40px; } }
+.btn > span { display: inline-flex; align-items: center; gap: 12px; }
+.wa { width: 20px; height: 20px; fill: currentColor; flex-shrink: 0; }

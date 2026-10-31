@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <base href="/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+
+    <!-- SEO básico. scripts/postbuild.mjs reemplaza __SITE_URL__ por la URL de site.config.json (o la que da Netlify). -->
+    <title>Club Deportivo Dragones | Escuela y equipos de voleibol</title>
+    <meta
+      name="description"
+      content="Club Deportivo Dragones: escuela y equipos de voleibol para todas las edades. Categorías Iniciación, Avanzado y Competitivo, entrenamientos nocturnos y clase de prueba sin costo."
+    />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <link rel="canonical" href="__SITE_URL__/" />
+    <meta name="theme-color" content="#03060c" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+
+    <!-- Íconos y app -->
+    <link rel="icon" type="image/png" sizes="48x48" href="icons/favicon-48.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png" />
+    <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+    <link rel="manifest" href="manifest.webmanifest" />
+
+    <!-- Vista previa al compartir (WhatsApp, Facebook, Instagram, X, LinkedIn) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="es_CO" />
+    <meta property="og:site_name" content="Club Deportivo Dragones" />
+    <meta property="og:title" content="Club Deportivo Dragones | Escuela y equipos de voleibol" />
+    <meta
+      property="og:description"
+      content="Voleibol para todas las edades: Iniciación, Avanzado y Competitivo. Agenda tu clase de prueba sin costo."
+    />
+    <meta property="og:url" content="__SITE_URL__/" />
+    <meta property="og:image" content="__SITE_URL__/img/og-image.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Escudo del Club Deportivo Dragones con el texto: voleibol, formación y competencia" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Club Deportivo Dragones | Escuela y equipos de voleibol" />
+    <meta
+      name="twitter:description"
+      content="Voleibol para todas las edades: Iniciación, Avanzado y Competitivo. Agenda tu clase de prueba sin costo."
+    />
+    <meta name="twitter:image" content="__SITE_URL__/img/og-image.jpg" />
+
+    <!-- La foto principal se pide de inmediato para mejorar el LCP -->
+    <link
+      rel="preload"
+      as="image"
+      type="image/webp"
+      imagesrcset="img/equipo-600.webp 600w, img/equipo-800.webp 800w, img/equipo-1280.webp 1280w, img/equipo-1920.webp 1920w"
+      imagesizes="(min-width: 1100px) 600px, (min-width: 768px) 640px, calc(100vw - 64px)"
+      fetchpriority="high"
+    />
+
+    <!-- Datos estructurados para Google -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "SportsOrganization",
+            "@id": "__SITE_URL__/#club",
+            "name": "Club Deportivo Dragones",
+            "alternateName": "Dragones Voleibol",
+            "url": "__SITE_URL__/",
+            "logo": "__SITE_URL__/icons/icon-512.png",
+            "image": "__SITE_URL__/img/og-image.jpg",
+            "description": "Escuela y equipos de voleibol para todas las edades, organizados por nivel: Iniciación, Avanzado y Competitivo.",
+            "sport": "Voleibol"
+          },
+          {
+            "@type": "WebSite",
+            "@id": "__SITE_URL__/#website",
+            "url": "__SITE_URL__/",
+            "name": "Club Deportivo Dragones",
+            "inLanguage": "es",
+            "publisher": { "@id": "__SITE_URL__/#club" }
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body>
+    <app-root></app-root>
+  </body>
+</html>

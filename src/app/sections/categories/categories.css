@@ -1,0 +1,23 @@
+.cats-head { margin-bottom: 40px; }
+@media (min-width: 640px) { .cats-head { margin-bottom: 64px; } }
+.cats-head h2 { margin-top: 16px; letter-spacing: normal; }
+.cat-grid { display: grid; gap: 1px; border: 1px solid rgba(255, 255, 255, 0.15); background: rgba(255, 255, 255, 0.15); }
+@media (min-width: 640px) and (max-width: 899px) { .cat-grid { grid-template-columns: repeat(2, 1fr); } .cat:last-child { grid-column: 1 / -1; } }
+@media (min-width: 900px) { .cat-grid { grid-template-columns: repeat(3, 1fr); } }
+.cat { position: relative; background: var(--card); padding: 32px 24px; transition: background 0.3s; }
+@media (min-width: 640px) { .cat { padding: 40px; } }
+.cat .num { position: absolute; right: 20px; top: 16px; font-family: var(--font-display); font-size: 60px; color: rgba(245, 241, 236, 0.05); transition: color 0.3s; }
+/* Número decorativo como contenido CSS: no se lee como texto ni cuenta para el contraste. */
+.cat .num::before { content: attr(data-num); }
+.cat .nivel { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.2em; color: var(--accent); transition: color 0.3s; }
+.cat h3 { font-family: var(--font-display); margin-top: 12px; font-size: 24px; text-transform: uppercase; transition: color 0.3s; }
+.cat p:not(.nivel) { margin-top: 16px; color: var(--muted-foreground); transition: color 0.3s; }
+.cat .bar { margin-top: 32px; height: 2px; width: 40px; background: linear-gradient(90deg, var(--primary), var(--accent)); transition: width 0.3s; }
+@media (hover: hover) {
+  .cat:hover { background: var(--primary); }
+  .cat:hover .num { color: rgba(255, 255, 255, 0.1); }
+  .cat:hover .nivel { color: #fff; }
+  .cat:hover h3 { color: #fff; }
+  .cat:hover p:not(.nivel) { color: rgba(255, 255, 255, 0.8); }
+  .cat:hover .bar { width: 80px; }
+}

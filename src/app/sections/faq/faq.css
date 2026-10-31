@@ -1,0 +1,15 @@
+.section { padding-top: 96px; padding-bottom: 96px; }
+.faq { display: grid; gap: 40px; }
+@media (min-width: 1024px) { .faq { grid-template-columns: 0.8fr 1.2fr; gap: 80px; align-items: start; } }
+.faq h2 { font-family: var(--font-display); margin-top: 16px; font-size: clamp(36px, 5vw, 48px); text-transform: uppercase; line-height: 0.95; }
+.faq-list { border-top: 1px solid var(--border); }
+.faq-item { border-bottom: 1px solid var(--border); }
+.question { width: 100%; background: none; border: 0; color: inherit; font: inherit; text-align: left; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 24px 0; font-size: 16px; font-weight: 600; transition: color 0.2s; }
+.question:hover, .open .question { color: var(--accent); }
+.question:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+.chev { transition: transform 0.25s; width: 16px; height: 16px; stroke: currentColor; stroke-width: 2; fill: none; flex-shrink: 0; }
+.open .chev { transform: rotate(180deg); }
+.answer-wrap { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.3s ease; }
+.open .answer-wrap { grid-template-rows: 1fr; }
+.answer-inner { overflow: hidden; }
+.answer { max-width: 36rem; padding-bottom: 24px; color: var(--muted-foreground); }

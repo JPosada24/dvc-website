@@ -1,0 +1,17 @@
+<section id="horarios" class="section">
+  <div class="wrap-narrow">
+    <div class="center-head">
+      <span class="kicker">Agenda semanal</span>
+      <h2>Horarios nocturnos</h2>
+    </div>
+    <ul class="schedule">
+      @for (s of sessions; track $index) {
+        <li>
+          <span class="dia">{{ s.day }}</span>
+          <span class="grupo">{{ s.group }}</span>
+          <span class="hora">{{ s.time }}</span>
+        </li>
+      }
+    </ul>
+  </div>
+</section>

@@ -1,0 +1,17 @@
+<section id="club" class="section">
+  <div class="wrap">
+    <h2 class="section-title">Más que un club, <span class="text-fire">una hermandad</span></h2>
+    <div class="title-bar"></div>
+    <div class="pillars">
+      @for (pillar of pillars; track pillar.title; let i = $index) {
+        <div class="pillar">
+          <span class="num" aria-hidden="true" [attr.data-num]="'0' + (i + 1)"></span>
+          <div class="inner">
+            <h3>{{ pillar.title }}</h3>
+            <p>{{ pillar.text }}</p>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</section>

@@ -1,0 +1,30 @@
+<section id="preguntas" class="section">
+  <div class="wrap faq">
+    <div>
+      <span class="kicker">Antes de entrar a la cancha</span>
+      <h2>Preguntas frecuentes</h2>
+    </div>
+    <div class="faq-list">
+      @for (item of questions; track item.q; let i = $index) {
+        <div class="faq-item" [class.open]="openIndex() === i">
+          <button
+            type="button"
+            class="question"
+            [id]="'faq-q-' + i"
+            [attr.aria-expanded]="openIndex() === i"
+            [attr.aria-controls]="'faq-a-' + i"
+            (click)="toggle(i)"
+          >
+            <span>{{ item.q }}</span>
+            <svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
+          </button>
+          <div class="answer-wrap" role="region" [id]="'faq-a-' + i" [attr.aria-labelledby]="'faq-q-' + i">
+            <div class="answer-inner">
+              <p class="answer">{{ item.a }}</p>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</section>

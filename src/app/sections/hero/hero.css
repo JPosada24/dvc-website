@@ -1,0 +1,42 @@
+.hero { position: relative; display: flex; align-items: center; padding: 104px 0 64px; overflow: hidden; }
+@media (min-width: 640px) { .hero { padding: 128px 0 80px; } }
+@media (min-width: 1100px) { .hero { min-height: 88vh; padding: 120px 0 72px; } }
+.hero-watermark { position: absolute; inset: 0; display: none; align-items: center; justify-content: center; pointer-events: none; user-select: none; opacity: 0.04; }
+.hero-watermark span { font-family: var(--font-display); font-size: 22vw; line-height: 1; color: var(--foreground); }
+/* La marca de agua solo se muestra con el diseño a dos columnas; apilado quedaba detrás de los botones. */
+@media (min-width: 1100px) { .hero-watermark { display: flex; } }
+.hero-grid { position: relative; z-index: 10; box-sizing: content-box; flex: 1; max-width: var(--content-width); margin: 0 auto; padding: 0 20px; display: grid; gap: 56px; align-items: center; }
+@media (min-width: 640px) { .hero-grid { padding: 0 24px; gap: 64px; } }
+@media (min-width: 1100px) { .hero-grid { grid-template-columns: 1fr 1fr; } }
+.hero-copy { max-width: 40rem; }
+.hero-badge { display: inline-flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+.hero-badge .line { height: 2px; width: 32px; flex-shrink: 0; background: linear-gradient(90deg, var(--primary), var(--accent)); }
+@media (min-width: 640px) { .hero-badge { margin-bottom: 24px; } .hero-badge .line { width: 40px; } }
+h1 { font-family: var(--font-display); font-size: clamp(44px, 11vw, 96px); text-transform: uppercase; line-height: 0.95; letter-spacing: 0.02em; }
+@media (min-width: 1100px) { h1 { font-size: clamp(64px, 6.5vw, 96px); } }
+.lead { margin-top: 24px; max-width: 32rem; font-size: 17px; color: var(--muted-foreground); }
+@media (min-width: 640px) { .lead { margin-top: 28px; font-size: 18px; } }
+.hero-actions { margin-top: 32px; display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
+@media (min-width: 640px) { .hero-actions { margin-top: 40px; gap: 16px; } }
+/* En celular los botones ocupan todo el ancho (con margen para la inclinación). */
+@media (max-width: 479px) {
+  .hero-actions { flex-direction: column; align-items: stretch; padding: 0 6px; }
+}
+
+/* Foto horizontal inclinada con esquinas decorativas */
+.hero-frame { position: relative; margin: 0 auto; width: 100%; max-width: 40rem; }
+@media (min-width: 1100px) { .hero-frame { max-width: 600px; margin: 0 0 0 auto; } }
+.skewbox { position: relative; z-index: 20; transform: skewX(-3deg); overflow: hidden; border-radius: 2px; border: 2px solid rgba(217, 84, 0, 0.3); box-shadow: var(--shadow-ember), 0 0 60px rgba(217, 84, 0, 0.18); }
+.skewbox picture { display: block; }
+/* Foto del equipo en 4:3 para que no se corten las cabezas de la fila de atrás;
+   el zoom mínimo (1.06) solo tapa las esquinas que deja la inclinación. */
+.skewbox img { display: block; width: 100%; height: auto; aspect-ratio: 4/3; transform: skewX(3deg) scale(1.06); object-fit: cover; object-position: center 45%; }
+/* Velo oscuro y cálido para integrar la foto (fondo claro) con el diseño oscuro. */
+.skewbox::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(to top, rgba(3, 6, 12, 0.5), rgba(3, 6, 12, 0) 45%), linear-gradient(135deg, rgba(217, 84, 0, 0.12), rgba(3, 6, 12, 0.15)); }
+.corner-tr { position: absolute; top: -24px; right: -24px; z-index: 30; height: 112px; width: 112px; border-top: 4px solid var(--accent); border-right: 4px solid var(--accent); }
+.corner-bl { position: absolute; bottom: -24px; left: -24px; z-index: 30; height: 112px; width: 112px; border-bottom: 4px solid var(--primary); border-left: 4px solid var(--primary); }
+@media (max-width: 767px) {
+  .hero-frame { width: calc(100% - 24px); }
+  .corner-tr { top: -12px; right: -12px; height: 64px; width: 64px; border-width: 3px; }
+  .corner-bl { bottom: -12px; left: -12px; height: 64px; width: 64px; border-width: 3px; }
+}

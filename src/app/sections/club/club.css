@@ -1,0 +1,11 @@
+.title-bar { margin-top: 32px; height: 6px; width: 96px; background-image: var(--gradient-fire); }
+.pillars { margin-top: 64px; display: grid; gap: 56px; }
+@media (min-width: 768px) { .pillars { margin-top: 80px; gap: 40px; } }
+@media (min-width: 768px) { .pillars { grid-template-columns: repeat(3, 1fr); } }
+.pillar { position: relative; }
+.pillar .num { position: absolute; top: -40px; left: -4px; font-family: var(--font-display); font-size: 80px; color: rgba(245, 241, 236, 0.04); transition: color 0.3s; }
+@media (hover: hover) { .pillar:hover .num { color: rgba(247, 127, 0, 0.1); } }
+.pillar .num::before { content: attr(data-num); }
+.pillar .inner { position: relative; z-index: 10; }
+.pillar h3 { font-family: var(--font-display); font-size: 24px; text-transform: uppercase; letter-spacing: 0.02em; }
+.pillar p { margin-top: 16px; color: var(--muted-foreground); }

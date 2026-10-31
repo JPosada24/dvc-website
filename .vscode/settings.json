@@ -1,0 +1,4 @@
+{
+    "djlint.showInstallError": false,
+    "typescript.tsdk": "node_modules/typescript/lib"
+}
