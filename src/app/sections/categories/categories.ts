@@ -15,12 +15,7 @@ export class Categories {
     {
       level: 'Juego estructurado',
       name: 'Avanzado',
-      text: 'Sistemas de juego, lectura de la cancha, preparación física y torneos interclubes.',
-    },
-    {
-      level: 'Alto rendimiento',
-      name: 'Competitivo',
-      text: 'Liga departamental, concentraciones y competencia real. Un menor puede ascender según su nivel.',
+      text: 'Sistemas de juego, lectura de la cancha, preparación física y torneos interclubes. Se pasa según el nivel, no la edad.',
     },
   ];
 }

@@ -9,11 +9,11 @@ export class Faq {
   protected readonly questions = [
     {
       q: '¿Los grupos se organizan por edad?',
-      a: 'No. En Dragones, las categorías se organizan por nivel: Iniciación, Avanzado y Competitivo.',
+      a: 'No. Se organizan por nivel, Iniciación y Avanzado, y cada nivel tiene rama femenina y rama masculina.',
     },
     {
-      q: '¿Un menor de edad puede jugar en el equipo competitivo?',
-      a: 'Sí. Un menor puede formar parte del equipo competitivo según su nivel de juego; la edad no define la categoría.',
+      q: '¿Un menor de edad puede entrenar en Avanzado?',
+      a: 'Sí. Un menor puede pasar a Avanzado según su nivel de juego; la edad no define el nivel.',
     },
     {
       q: '¿Qué días y a qué horas se entrena?',

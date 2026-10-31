@@ -17,7 +17,13 @@ export interface Torneo {
   id: string; nombre: string; rama: string; fecha_inicio: string; fecha_fin: string;
   fecha_limite_inscripcion: string; lugar: string | null; valor_inscripcion: number; cupos_libres: number;
 }
-export interface DatosClub { albumes: Album[]; videos: Video[]; equipo: Integrante[]; torneos: Torneo[]; }
+export interface Cifras {
+  deportistas_activos: number; femenina: number; masculina: number;
+  entrenamientos_semana: number; torneos_anio: number; anios: number | null;
+}
+export interface DatosClub {
+  cifras: Cifras | null; albumes: Album[]; videos: Video[]; equipo: Integrante[]; torneos: Torneo[];
+}
 
 export interface Inscripcion {
   nombre_club: string; ciudad: string; delegado_nombre: string; delegado_telefono: string;
@@ -54,6 +60,7 @@ export class ClubApi {
       if (!r.ok) return; // sitio aún no publicado en la plataforma, o caída: queda el contenido fijo
       const d = (await r.json()) as DatosClub;
       this.datos.set({
+        cifras: d.cifras ?? null,
         albumes: (d.albumes ?? []).filter((a) => a.fotos?.length),
         videos: (d.videos ?? []).filter((v) => ID_YOUTUBE.test(v.youtube_id)),
         equipo: d.equipo ?? [],
