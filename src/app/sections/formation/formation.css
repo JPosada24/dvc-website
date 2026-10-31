@@ -1,17 +1,24 @@
-.formation { border-top: 2px solid var(--primary); }
+/* Misma división que las demás secciones. */
+.formation { border-top: 1px solid rgba(255, 255, 255, 0.08); }
 
 /* Menos aire abajo: la sección siguiente (Horarios) queda más cerca. */
 .tight { padding-bottom: 56px; }
 @media (min-width: 640px) { .tight { padding-bottom: 72px; } }
 
-/* El texto va pegado al título: el título ocupa solo lo que miden sus líneas. */
-.head { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 20px 40px; }
-.title { flex: 0 1 auto; max-width: 6.8em; font-family: var(--font-display); font-size: clamp(44px, 7.5vw, 96px); text-transform: uppercase; line-height: 0.9; letter-spacing: 0.01em; }
-.intro { flex: 1 1 260px; max-width: 360px; font-size: 17px; line-height: 1.6; color: var(--muted-foreground); }
+/* Título y, debajo, el texto de entrada. */
+.title { max-width: 6.8em; font-family: var(--font-display); font-size: clamp(44px, 7.5vw, 96px); text-transform: uppercase; line-height: 0.9; letter-spacing: 0.01em; }
+.intro { margin-top: 24px; max-width: 34rem; font-size: 17px; line-height: 1.6; color: var(--muted-foreground); }
 
-/* La cancha: 3 columnas × 2 filas, arriba la red y abajo el fondo. */
-.court { list-style: none; margin-top: 48px; display: grid; grid-template-columns: 1fr; border: 1px solid rgba(255, 255, 255, 0.2); }
-@media (min-width: 640px) { .court { margin-top: 64px; grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+/* La red sobre la cancha: así se reconoce que es una cancha de voleibol. */
+.net { position: relative; margin-top: 48px; height: 14px; border: 2px solid rgba(245, 241, 236, 0.75);
+  background: repeating-linear-gradient(90deg, rgba(245, 241, 236, 0.28) 0 1px, transparent 1px 8px),
+    repeating-linear-gradient(0deg, rgba(245, 241, 236, 0.28) 0 1px, transparent 1px 5px); }
+.net span { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); padding: 0 10px; background: var(--background); font-size: 10px; font-weight: 700; letter-spacing: 0.3em; text-transform: uppercase; color: var(--muted-foreground); }
+@media (min-width: 640px) { .net { margin-top: 56px; } }
+
+/* La cancha: 3 columnas × 2 filas, arriba junto a la red y abajo el fondo. */
+.court { list-style: none; display: grid; grid-template-columns: 1fr; border: 1px solid rgba(255, 255, 255, 0.2); border-top: 0; }
+@media (min-width: 640px) { .court { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 .zone { display: grid; align-content: start; gap: 10px; padding: 24px 22px 28px; border-bottom: 1px solid rgba(255, 255, 255, 0.12); transition: background 0.25s; }
 .zone:last-child { border-bottom: 0; }
 @media (min-width: 640px) {
@@ -26,3 +33,10 @@
 .zone h3 { font-size: 17px; font-weight: 700; }
 .zone p { color: var(--muted-foreground); font-size: 15px; }
 
+/* Indicadores de la cancha (sin texto de rotación). */
+.legend { margin-top: 24px; display: flex; flex-wrap: wrap; gap: 10px 26px; font-size: 13px; color: var(--muted-foreground); }
+.legend span { display: inline-flex; align-items: center; gap: 8px; }
+.dot { width: 10px; height: 10px; }
+.dot.front { background: var(--accent); }
+.dot.back { background: #f5b731; }
+.dash { width: 22px; border-top: 1px dashed rgba(255, 255, 255, 0.6); }

@@ -1,11 +1,10 @@
 <section id="formacion" class="formation" aria-labelledby="titulo-formacion">
   <div class="section wrap tight">
-    <div class="head">
-      <h2 id="titulo-formacion" class="title">La formación va por <span class="text-fire">rotaciones</span></h2>
-      <p class="intro">{{ intro() }}</p>
-    </div>
+    <h2 id="titulo-formacion" class="title">La formación va por <span class="text-fire">rotaciones</span></h2>
+    <p class="intro">{{ intro() }}</p>
 
-    <!-- La cancha: la fila de arriba está junto a la red; la línea punteada es la línea de ataque. -->
+    <!-- La cancha: la red va arriba, la fila de arriba está junto a ella y la línea punteada es la de ataque. -->
+    <div class="net" aria-hidden="true"><span>Red</span></div>
     <ol class="court">
       @for (z of zonas(); track z.n; let i = $index) {
         <li class="zone" [class.front]="i < 3" [attr.aria-label]="'Zona ' + z.n + ': ' + z.titulo">
@@ -15,5 +14,10 @@
         </li>
       }
     </ol>
+    <p class="legend">
+      <span><i class="dot front" aria-hidden="true"></i>Zonas junto a la red</span>
+      <span><i class="dot back" aria-hidden="true"></i>Zonas de fondo</span>
+      <span><i class="dash" aria-hidden="true"></i>Línea de ataque</span>
+    </p>
   </div>
 </section>
