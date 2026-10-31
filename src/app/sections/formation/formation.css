@@ -1,14 +1,13 @@
-.formation { position: relative; border-top: 2px solid var(--primary); }
+.formation { border-top: 2px solid var(--primary); }
 
-/* Etiqueta vertical al borde, como en un tablero de cancha. */
-.side-label { display: none; position: absolute; top: 24px; left: 20px; writing-mode: vertical-rl; font-size: 11px; font-weight: 700; letter-spacing: 0.32em; text-transform: uppercase; color: var(--muted-foreground); }
-@media (min-width: 1100px) { .side-label { display: block; } }
+/* Menos aire abajo: la sección siguiente (Horarios) queda más cerca. */
+.tight { padding-bottom: 56px; }
+@media (min-width: 640px) { .tight { padding-bottom: 72px; } }
 
-.head { display: grid; gap: 28px; align-items: start; }
-@media (min-width: 900px) { .head { grid-template-columns: minmax(0, 1fr) 300px; gap: 48px; } }
-.title { font-family: var(--font-display); font-size: clamp(44px, 7.5vw, 96px); text-transform: uppercase; line-height: 0.9; letter-spacing: 0.01em; text-wrap: balance; }
-.intro { font-size: 17px; line-height: 1.6; color: var(--muted-foreground); }
-@media (min-width: 900px) { .intro { padding-top: 10px; } }
+/* El texto va pegado al título: el título ocupa solo lo que miden sus líneas. */
+.head { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 20px 40px; }
+.title { flex: 0 1 auto; max-width: 6.8em; font-family: var(--font-display); font-size: clamp(44px, 7.5vw, 96px); text-transform: uppercase; line-height: 0.9; letter-spacing: 0.01em; }
+.intro { flex: 1 1 260px; max-width: 360px; font-size: 17px; line-height: 1.6; color: var(--muted-foreground); }
 
 /* La cancha: 3 columnas × 2 filas, arriba la red y abajo el fondo. */
 .court { list-style: none; margin-top: 48px; display: grid; grid-template-columns: 1fr; border: 1px solid rgba(255, 255, 255, 0.2); }
@@ -27,8 +26,3 @@
 .zone h3 { font-size: 17px; font-weight: 700; }
 .zone p { color: var(--muted-foreground); font-size: 15px; }
 
-.legend { margin-top: 18px; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; font-size: 13px; color: var(--muted-foreground); }
-.dot { display: inline-block; width: 10px; height: 10px; }
-.dot.front { background: var(--accent); }
-.dot.back { margin-left: 8px; background: #f5b731; }
-.sep { margin: 0 2px; }
