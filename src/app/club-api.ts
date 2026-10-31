@@ -10,7 +10,7 @@ import { isPlatformBrowser } from '@angular/common';
  */
 
 export interface Foto { id: string; ancho: number; alto: number; }
-export interface Album { id: string; nombre: string; fecha: string | null; fotos: Foto[]; }
+export interface Album { id: string; nombre: string; fecha: string | null; fotos: Foto[]; portada: string | null; }
 export interface Video { id: string; titulo: string; youtube_id: string; }
 export interface Integrante { id: string; nombre: string; cargo: string; bio: string | null; foto: string | null; }
 export interface Etapa { titulo: string; texto: string; }
@@ -81,6 +81,14 @@ export class ClubApi {
 
   foto(f: Foto, tam: 'mini' | 'grande'): string {
     return `${this.base}/api/v1/publico/fotos/${encodeURIComponent(f.id)}?tam=${tam}`;
+  }
+
+  /** Portada del álbum: la propia (si la eligieron en el panel) o, si no, la primera foto. */
+  portadaAlbum(a: Album): string {
+    if (a.portada && /^[0-9a-f]{8}$/.test(a.portada)) {
+      return `${this.base}/api/v1/publico/albumes/${encodeURIComponent(a.id)}/portada?v=${a.portada}`;
+    }
+    return this.foto(a.fotos[0]!, 'mini');
   }
 
   /** Foto de un entrenador; ?v= cambia con cada foto nueva, así la caché del navegador no muestra la vieja. */

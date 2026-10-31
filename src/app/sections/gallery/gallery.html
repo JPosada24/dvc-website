@@ -28,7 +28,7 @@
               <li>
                 <button type="button" class="album" (click)="abrirAlbum(a)" [attr.aria-label]="'Abrir álbum ' + a.nombre">
                   <span class="cover">
-                    <img [src]="api.foto(a.fotos[0]!, 'mini')" alt="" loading="lazy" decoding="async" />
+                    <img [src]="api.portadaAlbum(a)" alt="" loading="lazy" decoding="async" />
                     <span class="badge">{{ a.fotos.length }} {{ a.fotos.length === 1 ? 'foto' : 'fotos' }}</span>
                   </span>
                   <span class="album-name">{{ a.nombre }}</span>
