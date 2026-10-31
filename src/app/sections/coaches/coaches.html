@@ -4,13 +4,29 @@
       <span class="kicker">Detrás de cada entrenamiento</span>
       <h2 class="section-title title">Nuestro <span class="text-fire">equipo técnico</span></h2>
       <p class="muted intro">Conoce a quienes acompañan a los Dragones dentro de la cancha.</p>
+      @if (!equipo().length) {
       <div class="team-note">
         <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
           <path d="M20 13c0 5-3.5 7.5-7.66 8.95a7.19 7.19 0 0 1-.67-.18C7.47 20.31 4 17.79 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" />
         </svg>
         <p>Los perfiles, la trayectoria y las especialidades de nuestros entrenadores se publicarán aquí.</p>
       </div>
+      }
     </div>
+    @if (equipo().length) {
+      <ul class="roster">
+        @for (p of equipo(); track p.id; let i = $index) {
+          <li class="person">
+            <span class="badge" aria-hidden="true">{{ iniciales(p.nombre) }}</span>
+            <div>
+              <h3>{{ p.nombre }}</h3>
+              <p class="role">{{ p.cargo }}</p>
+              @if (p.bio) { <p class="bio">{{ p.bio }}</p> }
+            </div>
+          </li>
+        }
+      </ul>
+    } @else {
     <div class="team-card">
       <div class="team-logo">
         <img src="img/logo-192.png" alt="Escudo del Club Deportivo Dragones" width="96" height="96" loading="lazy" />
@@ -36,5 +52,6 @@
         </a>
       </div>
     </div>
+    }
   </div>
 </section>

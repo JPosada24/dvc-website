@@ -8,7 +8,7 @@
     </a>
 
     <div class="nav-links">
-      @for (link of links; track link.id) {
+      @for (link of links(); track link.id) {
         <a
           [href]="'#' + link.id"
           [class.active]="activeId() === link.id"
@@ -35,7 +35,7 @@
 
 <div id="menu-movil" class="mobile-menu" [attr.inert]="menuOpen() ? null : ''">
   <div class="mobile-links">
-    @for (link of links; track link.id; let i = $index) {
+    @for (link of links(); track link.id; let i = $index) {
       <a
         [href]="'#' + link.id"
         [class.active]="activeId() === link.id"

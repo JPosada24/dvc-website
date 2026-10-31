@@ -24,8 +24,13 @@ if (!/^https:\/\/[^/]+$/.test(siteUrl)) throw new Error(`URL del sitio no válid
 // Las vistas previas de Netlify (deploy previews, ramas) no deben aparecer en Google.
 const indexable = !netlify || process.env.CONTEXT === 'production';
 
+// API de la plataforma Dragones (datos en vivo). Vacía = el sitio solo muestra su contenido fijo.
+const apiUrl = (process.env.API_URL ?? config.apiUrl ?? '').trim().replace(/\/+$/, '');
+if (apiUrl && !/^https:\/\/[^/]+$/.test(apiUrl)) throw new Error(`API_URL no válida: "${apiUrl}" (debe ser https://dominio, sin ruta)`);
+
 const today = new Date().toISOString().slice(0, 10);
-const fillTokens = (text) => text.replaceAll('__SITE_URL__', siteUrl).replaceAll('__BUILD_DATE__', today);
+const fillTokens = (text) =>
+  text.replaceAll('__SITE_URL__', siteUrl).replaceAll('__BUILD_DATE__', today).replaceAll('__API_URL__', apiUrl);
 html = fillTokens(html);
 if (!indexable) html = html.replace(/<meta name="robots" content="[^"]*">/, '<meta name="robots" content="noindex, nofollow">');
 for (const file of ['robots.txt', 'sitemap.xml']) {
@@ -58,9 +63,10 @@ const policy = {
   'script-src': ["'self'", ...hashes],
   // Angular inserta los estilos de cada componente en etiquetas <style>.
   'style-src': ["'self'", "'unsafe-inline'"],
-  'img-src': ["'self'", 'data:'],
+  // Con API: fotos de la galería (la API) y portadas de YouTube; las peticiones van solo a la API.
+  'img-src': ["'self'", 'data:', ...(apiUrl ? [apiUrl, 'https://i.ytimg.com'] : [])],
   'font-src': ["'self'"],
-  'connect-src': ["'self'"],
+  'connect-src': ["'self'", ...(apiUrl ? [apiUrl] : [])],
   'manifest-src': ["'self'"],
   'object-src': ["'none'"],
   'base-uri': ["'self'"],
@@ -147,3 +153,4 @@ if (netlify) {
 
 console.log(`URL del sitio: ${siteUrl}${indexable ? '' : ' (vista previa: noindex)'}`);
 console.log(`CSP lista: ${hashes.length} script(s) en línea permitidos por hash.`);
+console.log(apiUrl ? `Plataforma Dragones: ${apiUrl}` : 'Sin API de la plataforma: el sitio muestra solo su contenido fijo.');

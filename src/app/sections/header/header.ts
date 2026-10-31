@@ -1,4 +1,5 @@
-import { Component, DestroyRef, DOCUMENT, afterNextRender, effect, inject, signal } from '@angular/core';
+import { computed, Component, DestroyRef, DOCUMENT, afterNextRender, effect, inject, signal } from '@angular/core';
+import { ClubApi } from '../../club-api';
 
 /** Ancho a partir del cual se muestra el menú de escritorio (debe coincidir con header.css). */
 const DESKTOP_QUERY = '(min-width: 1180px)';
@@ -13,17 +14,23 @@ const DESKTOP_QUERY = '(min-width: 1180px)';
   },
 })
 export class Header {
-  protected readonly links = [
-    { id: 'club', label: 'El club' },
-    { id: 'categorias', label: 'Categorías' },
-    { id: 'horarios', label: 'Horarios' },
-    { id: 'entrenadores', label: 'Entrenadores' },
-    { id: 'eventos', label: 'Eventos' },
-    { id: 'preguntas', label: 'Preguntas' },
-  ];
+  private readonly api = inject(ClubApi);
+  /** "Galería" aparece solo si la plataforma tiene fotos o videos publicados; "Eventos" pasa a "Torneos" si hay. */
+  protected readonly links = computed(() => {
+    const d = this.api.datos();
+    return [
+      { id: 'club', label: 'El club' },
+      { id: 'categorias', label: 'Categorías' },
+      { id: 'horarios', label: 'Horarios' },
+      { id: 'entrenadores', label: 'Entrenadores' },
+      ...(d && (d.albumes.length || d.videos.length) ? [{ id: 'galeria', label: 'Galería' }] : []),
+      { id: 'eventos', label: d?.torneos.length ? 'Torneos' : 'Eventos' },
+      { id: 'preguntas', label: 'Preguntas' },
+    ];
+  });
 
   // Por defecto (portada) queda activo el primer enlace.
-  protected readonly activeId = signal(this.links[0].id);
+  protected readonly activeId = signal('club');
   protected readonly menuOpen = signal(false);
 
   private readonly document = inject(DOCUMENT);
@@ -37,15 +44,16 @@ export class Header {
     });
 
     afterNextRender(() => {
-      const sections = this.links
-        .map((link) => document.getElementById(link.id))
-        .filter((section): section is HTMLElement => section !== null);
 
       // Activa la última sección cuyo inicio ya pasó el 40 % superior de la pantalla;
       // así, más allá de la última sección (inscripción, footer) sigue activa la más cercana.
       const update = () => {
         const line = window.innerHeight * 0.4;
-        let current = this.links[0].id;
+        // Se buscan en cada cálculo: la galería aparece después, cuando llegan los datos de la plataforma.
+        const sections = this.links()
+          .map((link) => document.getElementById(link.id))
+          .filter((section): section is HTMLElement => section !== null);
+        let current = 'club';
         for (const section of sections) {
           if (section.getBoundingClientRect().top <= line) current = section.id;
         }

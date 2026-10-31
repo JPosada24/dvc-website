@@ -30,6 +30,20 @@ la pone en la URL canónica, Open Graph, datos estructurados, `robots.txt` y `si
 Orden de prioridad: variable `SITE_URL` → URL de producción que entrega Netlify → `site.config.json`.
 Cuando tengas dominio propio, cambia `siteUrl` (o configúralo en Netlify) y vuelve a publicar.
 
+## Datos en vivo desde la plataforma Dragones
+
+El sitio puede mostrar lo que el club publica en la plataforma (panel → «Perfil del club» y «Torneos»):
+equipo técnico, galería de fotos y videos, y torneos con inscripciones abiertas, con el formulario para que
+otros clubes se inscriban solos.
+
+- La URL de la API va en `apiUrl` de [site.config.json](site.config.json) (o en la variable `API_URL`), con `https://` y sin ruta.
+  Vacía = el sitio muestra solo su contenido fijo. Al compilar, `postbuild.mjs` la pone en la página y abre la CSP
+  solo hacia esa API (y hacia `i.ytimg.com` para las portadas de los videos).
+- El HTML prerenderizado (lo que indexa Google) no cambia: los datos se cargan en el navegador después. Si la
+  plataforma no responde o el sitio aún no está publicado allí, cada sección queda con su texto fijo.
+- En la plataforma, el dominio del sitio va en `SITIO_ORIGENES` (`.env`): solo puede leer `/api/v1/publico` y sin credenciales.
+- Con `npm start` se usa la API local (`http://localhost:8001`).
+
 ## Publicar en Netlify
 
 **Opción A, recomendada: conectar el repositorio (GitHub, GitLab o Bitbucket).**

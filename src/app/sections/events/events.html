@@ -2,8 +2,8 @@
   <div class="section wrap">
     <div class="events-head">
       <div>
-        <span class="kicker">La vida del club</span>
-        <h2>Eventos <span class="text-fire">Dragones</span></h2>
+        <span class="kicker">{{ torneos().length ? 'Inscripciones abiertas' : 'La vida del club' }}</span>
+        <h2>{{ torneos().length ? 'Torneos' : 'Eventos' }} <span class="text-fire">Dragones</span></h2>
       </div>
       <span class="events-meta">
         <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
@@ -12,24 +12,97 @@
           <path d="M8 2v4" />
           <path d="M3 10h18" />
         </svg>
-        Agenda del club
+        {{ torneos().length ? 'Organizados por el club' : 'Agenda del club' }}
       </span>
     </div>
-    <div class="event-row">
-      <svg class="icon icon-lg" viewBox="0 0 24 24" aria-hidden="true">
-        <rect x="3" y="4" width="18" height="18" rx="2" />
-        <path d="M16 2v4" />
-        <path d="M8 2v4" />
-        <path d="M3 10h18" />
-      </svg>
-      <div>
-        <h3>La próxima cita está por llegar</h3>
-        <p>
-          No hay eventos publicados por ahora. Aquí encontrarás las fechas, los lugares y los
-          detalles de las próximas actividades del club.
-        </p>
+
+    @if (torneos().length) {
+      <ul class="tournaments">
+        @for (t of torneos(); track t.id) {
+          <li class="tournament">
+            <div class="date" aria-hidden="true">
+              <b>{{ fecha(t.fecha_inicio).dia }}</b><span>{{ fecha(t.fecha_inicio).mes }}</span>
+            </div>
+            <div class="info">
+              <p class="rama">{{ ramas[t.rama] ?? t.rama }}</p>
+              <h3>{{ t.nombre }}</h3>
+              <p class="meta">
+                {{ fecha(t.fecha_inicio).texto }}@if (t.fecha_fin !== t.fecha_inicio) { al {{ fecha(t.fecha_fin).texto }} }
+                @if (t.lugar) { · {{ t.lugar }} }
+                · {{ t.valor_inscripcion ? pesos(t.valor_inscripcion) + ' por equipo' : 'Sin costo' }}
+              </p>
+              <p class="cupos" [class.full]="!t.cupos_libres">
+                {{ t.cupos_libres ? t.cupos_libres + (t.cupos_libres === 1 ? ' cupo libre' : ' cupos libres') : 'Cupo lleno: lista de espera' }}
+                · cierra el {{ fecha(t.fecha_limite_inscripcion).texto }}
+              </p>
+            </div>
+            <button type="button" class="btn btn-fire btn-small" (click)="abrir(t)"><span>Inscribir mi club</span></button>
+          </li>
+        }
+      </ul>
+    } @else {
+      <div class="event-row">
+        <svg class="icon icon-lg" viewBox="0 0 24 24" aria-hidden="true">
+          <rect x="3" y="4" width="18" height="18" rx="2" />
+          <path d="M16 2v4" />
+          <path d="M8 2v4" />
+          <path d="M3 10h18" />
+        </svg>
+        <div>
+          <h3>La próxima cita está por llegar</h3>
+          <p>
+            No hay eventos publicados por ahora. Aquí encontrarás las fechas, los lugares y los
+            detalles de las próximas actividades del club.
+          </p>
+        </div>
+        <a href="#inscripcion" class="btn btn-outline btn-small"><span>Consultar novedades</span></a>
       </div>
-      <a href="#inscripcion" class="btn btn-outline btn-small"><span>Consultar novedades</span></a>
-    </div>
+    }
   </div>
+
+  <!-- Inscripción de un club externo: se envía a la plataforma Dragones. -->
+  <dialog #dialogo class="sheet" aria-labelledby="titulo-inscripcion" (close)="elegido.set(null)">
+    @if (elegido(); as t) {
+      <div class="sheet-head">
+        <div>
+          <p class="kicker">Inscripción de club</p>
+          <h3 id="titulo-inscripcion">{{ t.nombre }}</h3>
+          <p class="muted">
+            {{ t.valor_inscripcion ? pesos(t.valor_inscripcion) + ' por equipo. El club te contacta para coordinar el pago.' : 'Inscripción sin costo.' }}
+          </p>
+        </div>
+        <button type="button" class="close" (click)="cerrar()" aria-label="Cerrar">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12" /></svg>
+        </button>
+      </div>
+      @if (listo(); as m) {
+        <p class="ok" role="status">{{ m }}</p>
+        <button type="button" class="btn btn-fire btn-small" (click)="cerrar()"><span>Listo</span></button>
+      } @else {
+        <form class="sheet-form" (submit)="enviar($event)">
+          <label>Nombre del club <input name="nombre_club" required minlength="2" maxlength="120" autocomplete="organization" /></label>
+          <label>Ciudad <input name="ciudad" required minlength="2" maxlength="80" /></label>
+          <label>Delegado <input name="delegado_nombre" required minlength="2" maxlength="120" autocomplete="name" /></label>
+          <label>Celular del delegado
+            <input name="delegado_telefono" required inputmode="tel" pattern="[+]?[0-9 \-]{7,20}" autocomplete="tel" /></label>
+          <label class="wide">Correo (opcional) <input name="delegado_email" type="email" autocomplete="email" /></label>
+          <!-- Trampa para bots: invisible y fuera del orden de tabulación. -->
+          <label class="trap" aria-hidden="true">Sitio web <input name="sitio_web" tabindex="-1" autocomplete="off" /></label>
+          <label class="check wide">
+            <input type="checkbox" name="acepta_datos" required />
+            <span>Autorizo al Club Deportivo Dragones a usar estos datos solo para gestionar la inscripción al torneo (Ley 1581 de 2012).</span>
+          </label>
+          @if (error()) {
+            <p class="err wide" role="alert">{{ error() }}</p>
+          }
+          <div class="actions wide">
+            <button type="button" class="btn btn-outline btn-small" (click)="cerrar()"><span>Cancelar</span></button>
+            <button type="submit" class="btn btn-fire btn-small" [disabled]="enviando()">
+              <span>{{ enviando() ? 'Enviando…' : 'Inscribir club' }}</span>
+            </button>
+          </div>
+        </form>
+      }
+    }
+  </dialog>
 </section>

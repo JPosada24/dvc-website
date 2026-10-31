@@ -17,7 +17,7 @@ export class Faq {
     },
     {
       q: '¿Qué días y a qué horas se entrena?',
-      a: 'Entrenamos lunes, miércoles y viernes en horario nocturno. Iniciación: de 6:00 a 8:00 p.m. Avanzado: de 7:00 a 10:00 p.m.',
+      a: 'Entrenamos lunes, miércoles y sábado en horario nocturno. Iniciación: de 6:00 a 8:00 p.m. Avanzado: de 7:00 a 10:00 p.m.',
     },
   ];
 
