@@ -12,7 +12,8 @@ import { isPlatformBrowser } from '@angular/common';
 export interface Foto { id: string; ancho: number; alto: number; }
 export interface Album { id: string; nombre: string; fecha: string | null; fotos: Foto[]; }
 export interface Video { id: string; titulo: string; youtube_id: string; }
-export interface Integrante { id: string; nombre: string; cargo: string; bio: string | null; }
+export interface Integrante { id: string; nombre: string; cargo: string; bio: string | null; foto: string | null; }
+export interface Etapa { titulo: string; texto: string; }
 export interface Torneo {
   id: string; nombre: string; rama: string; fecha_inicio: string; fecha_fin: string;
   fecha_limite_inscripcion: string; lugar: string | null; valor_inscripcion: number; cupos_libres: number;
@@ -24,6 +25,7 @@ export interface Cifras {
 export interface Perfil {
   sede: string | null; mision: string | null; vision: string | null; historia: string | null;
   whatsapp: string | null; correo: string | null; instagram: string | null; facebook: string | null;
+  formacion_intro: string | null; formacion: Etapa[] | null;
 }
 export interface DatosClub {
   perfil: Perfil | null;
@@ -79,6 +81,13 @@ export class ClubApi {
 
   foto(f: Foto, tam: 'mini' | 'grande'): string {
     return `${this.base}/api/v1/publico/fotos/${encodeURIComponent(f.id)}?tam=${tam}`;
+  }
+
+  /** Foto de un entrenador; ?v= cambia con cada foto nueva, así la caché del navegador no muestra la vieja. */
+  fotoIntegrante(i: Integrante): string | null {
+    return i.foto && /^[0-9a-f]{8}$/.test(i.foto)
+      ? `${this.base}/api/v1/publico/equipo/${encodeURIComponent(i.id)}/foto?v=${i.foto}`
+      : null;
   }
 
   miniaturaVideo(v: Video): string {

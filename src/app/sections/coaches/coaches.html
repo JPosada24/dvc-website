@@ -17,7 +17,11 @@
       <ul class="roster">
         @for (p of equipo(); track p.id; let i = $index) {
           <li class="person">
-            <span class="badge" aria-hidden="true">{{ iniciales(p.nombre) }}</span>
+            @if (api.fotoIntegrante(p); as src) {
+              <span class="badge photo"><img [src]="src" [alt]="'Foto de ' + p.nombre" width="72" height="72" loading="lazy" /></span>
+            } @else {
+              <span class="badge" aria-hidden="true">{{ iniciales(p.nombre) }}</span>
+            }
             <div>
               <h3>{{ p.nombre }}</h3>
               <p class="role">{{ p.cargo }}</p>

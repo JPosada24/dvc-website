@@ -1,0 +1,34 @@
+.formation { position: relative; border-top: 2px solid var(--primary); }
+
+/* Etiqueta vertical al borde, como en un tablero de cancha. */
+.side-label { display: none; position: absolute; top: 24px; left: 20px; writing-mode: vertical-rl; font-size: 11px; font-weight: 700; letter-spacing: 0.32em; text-transform: uppercase; color: var(--muted-foreground); }
+@media (min-width: 1100px) { .side-label { display: block; } }
+
+.head { display: grid; gap: 28px; align-items: start; }
+@media (min-width: 900px) { .head { grid-template-columns: minmax(0, 1fr) 300px; gap: 48px; } }
+.title { font-family: var(--font-display); font-size: clamp(44px, 7.5vw, 96px); text-transform: uppercase; line-height: 0.9; letter-spacing: 0.01em; text-wrap: balance; }
+.intro { font-size: 17px; line-height: 1.6; color: var(--muted-foreground); }
+@media (min-width: 900px) { .intro { padding-top: 10px; } }
+
+/* La cancha: 3 columnas × 2 filas, arriba la red y abajo el fondo. */
+.court { list-style: none; margin-top: 48px; display: grid; grid-template-columns: 1fr; border: 1px solid rgba(255, 255, 255, 0.2); }
+@media (min-width: 640px) { .court { margin-top: 64px; grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.zone { display: grid; align-content: start; gap: 10px; padding: 24px 22px 28px; border-bottom: 1px solid rgba(255, 255, 255, 0.12); transition: background 0.25s; }
+.zone:last-child { border-bottom: 0; }
+@media (min-width: 640px) {
+  .zone { padding: 26px 24px 32px; border-bottom: 0; }
+  .zone:not(:nth-child(3n)) { border-right: 1px solid rgba(255, 255, 255, 0.12); }
+  /* Línea de ataque entre las zonas de la red y las de fondo. */
+  .zone.front { border-bottom: 1px dashed rgba(255, 255, 255, 0.3); }
+}
+@media (hover: hover) { .zone:hover { background: rgba(217, 84, 0, 0.08); } }
+.num { font-family: var(--font-display); font-size: 56px; line-height: 0.9; color: #f5b731; }
+.zone.front .num { color: var(--accent); }
+.zone h3 { font-size: 17px; font-weight: 700; }
+.zone p { color: var(--muted-foreground); font-size: 15px; }
+
+.legend { margin-top: 18px; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; font-size: 13px; color: var(--muted-foreground); }
+.dot { display: inline-block; width: 10px; height: 10px; }
+.dot.front { background: var(--accent); }
+.dot.back { margin-left: 8px; background: #f5b731; }
+.sep { margin: 0 2px; }

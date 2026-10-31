@@ -1,0 +1,25 @@
+<section id="formacion" class="formation" aria-labelledby="titulo-formacion">
+  <span class="side-label" aria-hidden="true">La formación</span>
+  <div class="section wrap">
+    <div class="head">
+      <h2 id="titulo-formacion" class="title">La formación va por <span class="text-fire">rotaciones</span></h2>
+      <p class="intro">{{ intro() }}</p>
+    </div>
+
+    <!-- La cancha: la fila de arriba está junto a la red; la línea punteada es la línea de ataque. -->
+    <ol class="court">
+      @for (z of zonas(); track z.n; let i = $index) {
+        <li class="zone" [class.front]="i < 3" [attr.aria-label]="'Zona ' + z.n + ': ' + z.titulo">
+          <span class="num" aria-hidden="true">{{ z.n }}</span>
+          <h3>{{ z.titulo }}</h3>
+          <p>{{ z.texto }}</p>
+        </li>
+      }
+    </ol>
+    <p class="legend">
+      <span class="dot front" aria-hidden="true"></span> Zonas junto a la red
+      <span class="dot back" aria-hidden="true"></span> Zonas de fondo
+      <span class="sep" aria-hidden="true">·</span> Se rota en el sentido de las agujas del reloj: 1 → 2 → 3 → 4 → 5 → 6.
+    </p>
+  </div>
+</section>
