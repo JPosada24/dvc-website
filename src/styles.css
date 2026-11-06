@@ -2,6 +2,7 @@
  * Paletas de marca. La activa se elige con data-paleta en <html> (src/index.html y public/politica-de-datos.html).
  * Cada paleta define solo los colores "de fuego"; el resto del diseño los toma de aquí.
  *   --fire-light / --fire-deep  degradado de títulos destacados, botones y barras
+ *   --fire-mid                  tono medio del degradado (opcional; si no se define, es la mezcla de los otros dos)
  *   --primary                   color fuerte: bordes, esquinas, fondo de tarjetas al pasar el mouse
  *   --accent                    color de detalle: kickers, enlace activo, cifras
  *   --ember-rgb                 brasa oscura del fondo de la sección de inscripción
@@ -33,16 +34,25 @@
   --ember-rgb: 92, 14, 32;
 }
 
-/* Dorado y rojo: tomados del pendón del club (brillo, tono medio y sombra del dorado; rojo del humo y los dragones). */
+/* Dorado y rojo: tomados del pendón del club. El dorado lleva tres tonos (brillo, medio y sombra ámbar)
+   para que se vea metálico como las letras del pendón; el rojo es el del humo y los dragones. */
 :root[data-paleta="dorado-rojo"] {
-  --fire-light: #f7e26a;
-  --fire-deep: #cf931b;
-  --primary: #a8161b;
-  --primary-rgb: 168, 22, 27;
+  --fire-light: #ffd65a;
+  --fire-mid: #e9a923;
+  --fire-deep: #b5650f;
+  --primary: #c41c21;
+  --primary-rgb: 196, 28, 33;
   --primary-foreground: #1f1004;
-  --accent: #e7b84a;
-  --accent-rgb: 231, 184, 74;
-  --ember-rgb: 110, 18, 14;
+  --accent: #eaa92a;
+  --accent-rgb: 234, 169, 42;
+  --ember-rgb: 150, 20, 18;
+  --ember-strength: 0.7;
+  /* Humo rojo como el del pendón: detrás de la foto, abajo a la izquierda y un toque arriba. */
+  --smoke:
+    radial-gradient(55% 65% at 80% 45%, rgba(170, 20, 22, 0.3), transparent 70%),
+    radial-gradient(45% 55% at 0% 100%, rgba(140, 16, 16, 0.22), transparent 70%),
+    radial-gradient(40% 50% at 25% 0%, rgba(120, 14, 14, 0.16), transparent 70%);
+  --band-bg: radial-gradient(90% 120% at 100% 0%, rgba(150, 20, 18, 0.2), transparent 60%), rgba(19, 26, 41, 0.3);
 }
 
 /* Tokens de diseño */
@@ -54,8 +64,12 @@
   --muted: #0d1420;
   --muted-foreground: #a79d91;
   --border: rgba(255, 255, 255, 0.12);
-  --gradient-fire: linear-gradient(135deg, var(--fire-light), var(--fire-deep));
-  --gradient-shell: radial-gradient(120% 90% at 50% 0%, rgba(var(--ember-rgb), 0.55), #03060c 70%);
+  --fire-mid: color-mix(in srgb, var(--fire-light), var(--fire-deep));
+  --gradient-fire: linear-gradient(135deg, var(--fire-light), var(--fire-mid), var(--fire-deep));
+  /* Ambiente (opcional por paleta): humo de la portada, fondo de las franjas y fuerza de la brasa. */
+  --smoke: none;
+  --band-bg: rgba(19, 26, 41, 0.3);
+  --ember-strength: 0.55;  --gradient-shell: radial-gradient(120% 90% at 50% 0%, rgba(var(--ember-rgb), var(--ember-strength)), #03060c 70%);
   --shadow-ember: 0 18px 50px -18px rgba(var(--primary-rgb), 0.55);
   --shadow-glow: 0 0 40px rgba(var(--primary-rgb), 0.25);
   --font-display: "Anton", system-ui, sans-serif;
@@ -103,6 +117,6 @@ section[id] { scroll-margin-top: 72px; }
 .wrap { box-sizing: content-box; max-width: var(--content-width); margin: 0 auto; }
 .wrap-narrow { max-width: 896px; margin: 0 auto; }
 .section-title { font-family: var(--font-display); font-size: clamp(36px, 5vw, 60px); text-transform: uppercase; line-height: 0.95; letter-spacing: 0.02em; }
-.band { border-top: 1px solid rgba(255, 255, 255, 0.08); border-bottom: 1px solid rgba(255, 255, 255, 0.08); background: rgba(19, 26, 41, 0.3); }
+.band { border-top: 1px solid rgba(255, 255, 255, 0.08); border-bottom: 1px solid rgba(255, 255, 255, 0.08); background: var(--band-bg); }
 
 .icon { width: 20px; height: 20px; stroke: currentColor; stroke-width: 1.8; fill: none; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }

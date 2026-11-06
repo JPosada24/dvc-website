@@ -1,6 +1,8 @@
 .hero { position: relative; display: flex; align-items: center; padding: 104px 0 64px; overflow: hidden; }
 @media (min-width: 640px) { .hero { padding: 128px 0 80px; } }
 @media (min-width: 1100px) { .hero { min-height: 88vh; padding: 120px 0 72px; } }
+/* Humo de fondo según la paleta (--smoke); en la paleta fuego no hay. */
+.hero::before { content: ""; position: absolute; inset: 0; pointer-events: none; background: var(--smoke); -webkit-mask-image: linear-gradient(to bottom, #000 65%, transparent); mask-image: linear-gradient(to bottom, #000 65%, transparent); }
 .hero-watermark { position: absolute; inset: 0; display: none; align-items: center; justify-content: center; pointer-events: none; user-select: none; opacity: 0.04; }
 .hero-watermark span { font-family: var(--font-display); font-size: 22vw; line-height: 1; color: var(--foreground); }
 /* La marca de agua solo se muestra con el diseño a dos columnas; apilado quedaba detrás de los botones. */
