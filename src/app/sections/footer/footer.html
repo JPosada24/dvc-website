@@ -4,13 +4,16 @@
       <img src="img/logo-96.png" alt="" width="32" height="32" loading="lazy" />
       <span>Club Deportivo Dragones</span>
     </div>
-    @if (redes().length) {
-      <ul class="footer-links">
-        @for (r of redes(); track r.red) {
-          <li><a [href]="r.href" [attr.target]="r.red === 'Correo' ? null : '_blank'" rel="noopener noreferrer" [attr.aria-label]="r.red + ': ' + r.label">{{ r.label }}</a></li>
-        }
-      </ul>
-    }
+    <ul class="footer-redes">
+      @for (r of redes(); track r.red) {
+        <li>
+          <a [href]="r.href" [attr.target]="r.externa ? '_blank' : null" rel="noopener noreferrer"
+             [attr.aria-label]="r.red + ': ' + r.detalle" [title]="r.red + ' · ' + r.detalle">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path [attr.d]="r.icono" /></svg>
+          </a>
+        </li>
+      }
+    </ul>
     <span class="footer-copy">© 2026 · Voleibol · <a href="politica-de-datos.html">Política de datos</a></span>
   </div>
 </footer>

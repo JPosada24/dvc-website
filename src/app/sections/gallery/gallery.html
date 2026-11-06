@@ -64,25 +64,47 @@
       }
     </div>
 
-    <dialog #visor class="viewer" aria-label="Foto ampliada" (close)="indice.set(null)">
+    <dialog #visor class="viewer" aria-label="Visor de fotos" (close)="alCerrar()">
       @if (foto(); as f) {
-        <!-- La miniatura (ya descargada en la cuadrícula) se ve al instante; la grande aparece entera al llegar. -->
-        <div class="viewer-foto">
-          <img class="previa" [src]="api.foto(f, 'mini')" alt="" aria-hidden="true" [attr.width]="f.ancho" [attr.height]="f.alto" />
-          <img class="grande" [class.lista]="cargadas().has(f.id)" (load)="marcarCargada(f.id)"
-               [src]="api.foto(f, 'grande')" [attr.width]="f.ancho" [attr.height]="f.alto"
-               [alt]="'Foto ' + (indice()! + 1) + ' de ' + album()!.nombre" />
-        </div>
-        <div class="viewer-bar">
-          <span>{{ album()!.nombre }} · {{ indice()! + 1 }}/{{ album()!.fotos.length }}</span>
-          <div class="viewer-actions">
-            @if (album()!.fotos.length > 1) {
-              <button type="button" (click)="mover(-1)" aria-label="Foto anterior">‹</button>
-              <button type="button" (click)="mover(1)" aria-label="Foto siguiente">›</button>
-            }
-            <button type="button" (click)="cerrar()" aria-label="Cerrar">✕</button>
+        <div class="viewer-top">
+          <div class="viewer-titulo">
+            <strong>{{ album()!.nombre }}</strong>
+            <span aria-live="polite">{{ indice()! + 1 }} / {{ album()!.fotos.length }}</span>
           </div>
+          <button type="button" class="viewer-btn" (click)="cerrar()" aria-label="Cerrar visor">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" /></svg>
+          </button>
         </div>
+
+        <!-- Clic fuera de la foto cierra; en el celular se desliza para pasar de foto. -->
+        <div class="viewer-escena" (click)="clicEscena($event)" (pointerdown)="inicioGesto($event)" (pointerup)="finGesto($event)">
+          <div class="viewer-foto">
+            <!-- La miniatura (ya descargada) se ve al instante; la grande aparece entera al llegar. -->
+            <img class="previa" [src]="api.foto(f, 'mini')" alt="" aria-hidden="true" draggable="false" />
+            <img class="grande" draggable="false" [class.lista]="cargadas().has(f.id)" (load)="marcarCargada(f.id)"
+                 [src]="api.foto(f, 'grande')" [alt]="'Foto ' + (indice()! + 1) + ' de ' + album()!.nombre" />
+            @if (!cargadas().has(f.id)) { <span class="cargando" aria-hidden="true"></span> }
+          </div>
+          @if (album()!.fotos.length > 1) {
+            <button type="button" class="viewer-btn nav prev" (click)="mover(-1)" aria-label="Foto anterior">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6" /></svg>
+            </button>
+            <button type="button" class="viewer-btn nav next" (click)="mover(1)" aria-label="Foto siguiente">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" /></svg>
+            </button>
+          }
+        </div>
+
+        @if (album()!.fotos.length > 1) {
+          <div #tira class="viewer-tira">
+            @for (g of album()!.fotos; track g.id; let j = $index) {
+              <button type="button" class="mini" [class.actual]="j === indice()" (click)="ir(j)"
+                      [attr.aria-label]="'Ir a la foto ' + (j + 1)" [attr.aria-current]="j === indice() ? 'true' : null">
+                <img [src]="api.foto(g, 'mini')" alt="" loading="lazy" decoding="async" />
+              </button>
+            }
+          </div>
+        }
       }
     </dialog>
   </section>

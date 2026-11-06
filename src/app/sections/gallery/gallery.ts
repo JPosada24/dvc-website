@@ -1,4 +1,4 @@
-import { Component, ElementRef, computed, inject, signal, viewChild } from '@angular/core';
+import { Component, DOCUMENT, ElementRef, computed, inject, signal, viewChild } from '@angular/core';
 import { Album, ClubApi, partesFecha } from '../../club-api';
 
 /** Galería en vivo: álbumes como tarjetas; al abrir uno se ven solo sus fotos. Sin datos de la plataforma no aparece. */
@@ -12,6 +12,12 @@ export class Gallery {
   protected readonly api = inject(ClubApi);
   private readonly visor = viewChild<ElementRef<HTMLDialogElement>>('visor');
   private readonly seccion = viewChild<ElementRef<HTMLElement>>('seccion');
+  private readonly tira = viewChild<ElementRef<HTMLElement>>('tira');
+  private readonly doc = inject(DOCUMENT);
+  /** Inicio de un deslizamiento con el dedo (o el mouse) sobre la foto. */
+  private gesto: { x: number; y: number } | null = null;
+  /** Tras deslizar, el clic que sigue no debe cerrar el visor. */
+  private deslizo = false;
 
   protected readonly albumes = computed(() => this.api.datos()?.albumes ?? []);
   protected readonly videos = computed(() => this.api.datos()?.videos ?? []);
@@ -46,7 +52,13 @@ export class Gallery {
   protected ampliar(i: number): void {
     this.indice.set(i);
     this.visor()?.nativeElement.showModal();
-    this.precargarVecinas();
+    this.doc.documentElement.style.overflow = 'hidden'; // la página de fondo no se desplaza
+    this.alCambiar();
+  }
+
+  protected ir(i: number): void {
+    this.indice.set(i);
+    this.alCambiar();
   }
 
   protected marcarCargada(id: string): void {
@@ -68,11 +80,47 @@ export class Gallery {
     this.visor()?.nativeElement.close();
   }
 
+  /** Al cerrarse (botón, Esc o clic fuera). */
+  protected alCerrar(): void {
+    this.indice.set(null);
+    this.doc.documentElement.style.overflow = '';
+  }
+
   protected mover(paso: number): void {
     const a = this.album();
     const i = this.indice();
     if (!a || i === null || !this.visor()?.nativeElement.open) return;
     this.indice.set((i + paso + a.fotos.length) % a.fotos.length);
+    this.alCambiar();
+  }
+
+  /** Clic en el fondo de la escena (no en la foto ni en las flechas): cierra. */
+  protected clicEscena(e: MouseEvent): void {
+    if (this.deslizo) { this.deslizo = false; return; }
+    if (e.target === e.currentTarget) this.cerrar();
+  }
+
+  protected inicioGesto(e: PointerEvent): void {
+    this.gesto = { x: e.clientX, y: e.clientY };
+  }
+
+  protected finGesto(e: PointerEvent): void {
+    if (!this.gesto) return;
+    const dx = e.clientX - this.gesto.x;
+    const dy = e.clientY - this.gesto.y;
+    this.gesto = null;
+    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+      this.deslizo = true;
+      this.mover(dx < 0 ? 1 : -1);
+    }
+  }
+
+  private alCambiar(): void {
     this.precargarVecinas();
+    // Tras pintar, la miniatura actual queda centrada en la tira.
+    requestAnimationFrame(() => {
+      this.tira()?.nativeElement.querySelector('.actual')
+        ?.scrollIntoView({ block: 'nearest', inline: 'center', behavior: 'smooth' });
+    });
   }
 }

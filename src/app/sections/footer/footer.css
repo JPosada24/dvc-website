@@ -7,6 +7,8 @@ footer { border-top: 1px solid rgba(255, 255, 255, 0.08); }
 .footer-copy { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.2em; }
 .footer-copy a { color: inherit; text-underline-offset: 3px; }
 .footer-copy a:hover, .footer-copy a:focus-visible { color: var(--accent); }
-.footer-links { list-style: none; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 20px; }
-.footer-links a { font-weight: 600; color: var(--foreground); transition: color 0.2s; }
-.footer-links a:hover, .footer-links a:focus-visible { color: var(--accent); }
+.footer-redes { list-style: none; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+.footer-redes a { display: grid; place-items: center; width: 44px; height: 44px; border: 1px solid var(--border); border-radius: 50%; color: var(--foreground); background: var(--card); transition: color 0.2s, border-color 0.2s, background 0.2s, transform 0.2s; }
+.footer-redes svg { width: 20px; height: 20px; fill: currentColor; }
+.footer-redes a:hover, .footer-redes a:focus-visible { color: var(--primary-foreground); border-color: transparent; background: var(--gradient-fire); transform: translateY(-2px); }
+@media (prefers-reduced-motion: reduce) { .footer-redes a { transition: none; } .footer-redes a:hover { transform: none; } }
