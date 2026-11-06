@@ -15,7 +15,7 @@ const DESKTOP_QUERY = '(min-width: 1180px)';
 })
 export class Header {
   private readonly api = inject(ClubApi);
-  /** "Galería" aparece solo si la plataforma tiene fotos o videos publicados; "Eventos" pasa a "Torneos" si hay. */
+  /** "Galería" e "Historial" aparecen solo si la plataforma tiene qué mostrar; "Eventos" pasa a "Torneos" si hay. */
   protected readonly links = computed(() => {
     const d = this.api.datos();
     return [
@@ -25,6 +25,7 @@ export class Header {
       { id: 'entrenadores', label: 'Entrenadores' },
       ...(d && (d.albumes.length || d.videos.length) ? [{ id: 'galeria', label: 'Galería' }] : []),
       { id: 'eventos', label: d?.torneos.length ? 'Torneos' : 'Eventos' },
+      ...(d?.torneosRealizados.length ? [{ id: 'torneos-realizados', label: 'Historial' }] : []),
       { id: 'preguntas', label: 'Preguntas' },
     ];
   });

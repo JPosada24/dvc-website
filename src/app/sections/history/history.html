@@ -1,0 +1,51 @@
+@if (torneos().length) {
+  <section id="torneos-realizados" class="section">
+    <div class="wrap">
+      <span class="kicker">Así se vivieron</span>
+      <h2 class="section-title title">Torneos <span class="text-fire">realizados</span></h2>
+
+      <ul class="torneos">
+        @for (t of torneos(); track t.id) {
+          <li class="torneo">
+            @if (api.anuncio(t, 'mini'); as src) {
+              <button type="button" class="afiche" (click)="ampliar(t)" [attr.aria-label]="'Ver el anuncio de ' + t.nombre">
+                <img [src]="src" alt="" loading="lazy" decoding="async"
+                     [attr.width]="t.anuncio_ancho" [attr.height]="t.anuncio_alto" />
+                <span class="lupa" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7" /><path d="m20 20-4-4M11 8v6M8 11h6" /></svg>
+                </span>
+              </button>
+            } @else {
+              <div class="afiche vacio" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0V4ZM7 6H4v2a3 3 0 0 0 3 3M17 6h3v2a3 3 0 0 1-3 3" /></svg>
+              </div>
+            }
+            <div class="datos">
+              <p class="cuando">{{ fecha(t.fecha) }}@if (t.lugar) { · {{ t.lugar }} }</p>
+              <h3>{{ t.nombre }}</h3>
+              @if (t.resumen) { <p class="resumen">{{ t.resumen }}</p> }
+              @if (tieneFotos(t)) {
+                <button type="button" class="btn btn-outline btn-small" (click)="verFotos(t)"><span>Ver fotos</span></button>
+              }
+            </div>
+          </li>
+        }
+      </ul>
+    </div>
+
+    <dialog #visor class="visor" aria-label="Anuncio del torneo" (close)="alCerrar()" (click)="clicFondo($event)">
+      @if (ampliado(); as t) {
+        <div class="visor-top">
+          <span class="visor-titulo">{{ t.nombre }}</span>
+          <button type="button" class="cerrar" (click)="cerrar()" aria-label="Cerrar">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12" /></svg>
+          </button>
+        </div>
+        <div class="visor-escena" (click)="clicFondo($event)">
+          <img [src]="api.anuncio(t, 'grande')" [alt]="'Anuncio de ' + t.nombre"
+               [attr.width]="t.anuncio_ancho" [attr.height]="t.anuncio_alto" draggable="false" />
+        </div>
+      }
+    </dialog>
+  </section>
+}

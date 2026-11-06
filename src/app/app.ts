@@ -7,6 +7,7 @@ import { Categories } from './sections/categories/categories';
 import { Schedule } from './sections/schedule/schedule';
 import { Coaches } from './sections/coaches/coaches';
 import { Events } from './sections/events/events';
+import { Historial } from './sections/history/history';
 import { Gallery } from './sections/gallery/gallery';
 import { Faq } from './sections/faq/faq';
 import { Formation } from './sections/formation/formation';
@@ -15,7 +16,7 @@ import { Footer } from './sections/footer/footer';
 
 @Component({
   selector: 'app-root',
-  imports: [Header, Hero, Stats, Club, Categories, Formation, Schedule, Coaches, Gallery, Events, Faq, Cta, Footer],
+  imports: [Header, Hero, Stats, Club, Categories, Formation, Schedule, Coaches, Gallery, Events, Historial, Faq, Cta, Footer],
   templateUrl: './app.html',
 })
 export class App {}

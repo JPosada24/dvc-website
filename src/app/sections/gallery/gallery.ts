@@ -1,4 +1,4 @@
-import { Component, DOCUMENT, ElementRef, computed, inject, signal, viewChild } from '@angular/core';
+import { Component, DOCUMENT, ElementRef, computed, effect, inject, signal, untracked, viewChild } from '@angular/core';
 import { Album, ClubApi, partesFecha } from '../../club-api';
 
 /** Galería en vivo: álbumes como tarjetas; al abrir uno se ven solo sus fotos. Sin datos de la plataforma no aparece. */
@@ -33,6 +33,19 @@ export class Gallery {
   protected readonly fecha = partesFecha;
   /** Fotos grandes ya descargadas: se muestran sin transición de carga. */
   protected readonly cargadas = signal<ReadonlySet<string>>(new Set());
+
+  constructor() {
+    // Otra sección pide abrir un álbum (p. ej. «Ver fotos» de un torneo realizado).
+    effect(() => {
+      const id = this.api.albumPedido();
+      const a = id ? this.albumes().find((x) => x.id === id) : undefined;
+      if (!id) return;
+      untracked(() => {
+        this.api.albumPedido.set(null);
+        if (a) this.abrirAlbum(a);
+      });
+    });
+  }
 
   protected abrirAlbum(a: Album): void {
     this.album.set(a);

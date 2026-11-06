@@ -1,0 +1,37 @@
+.torneos { list-style: none; margin-top: 48px; display: grid; gap: 28px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr)); }
+.torneo { display: grid; grid-template-rows: auto 1fr; border: 1px solid var(--border); background: var(--card); transition: border-color 0.2s; }
+.torneo:hover { border-color: rgba(var(--accent-rgb), 0.45); }
+
+/* El anuncio se ve entero (lleva texto): sin recortar, sobre fondo oscuro */
+.afiche { position: relative; display: grid; place-items: center; aspect-ratio: 4 / 5; padding: 0; border: 0; border-bottom: 1px solid var(--border); background: var(--background); overflow: hidden; cursor: zoom-in; }
+.afiche img { width: 100%; height: 100%; object-fit: contain; transition: transform 0.4s ease; }
+.afiche:hover img, .afiche:focus-visible img { transform: scale(1.03); }
+.afiche:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+.afiche.vacio { cursor: default; }
+.afiche.vacio svg { width: 56px; height: 56px; fill: none; stroke: var(--accent); stroke-width: 1.25; opacity: 0.6; }
+.lupa { position: absolute; right: 12px; bottom: 12px; display: grid; place-items: center; width: 38px; height: 38px; background: rgba(3, 6, 12, 0.75); border: 1px solid rgba(var(--accent-rgb), 0.45); opacity: 0; transition: opacity 0.2s; }
+.lupa svg { width: 18px; height: 18px; fill: none; stroke: var(--foreground); stroke-width: 2; }
+.afiche:hover .lupa, .afiche:focus-visible .lupa { opacity: 1; }
+@media (hover: none) { .lupa { opacity: 1; } }
+
+.datos { display: grid; align-content: start; gap: 8px; padding: 20px 22px 24px; }
+.cuando { font-size: 11px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); }
+.datos h3 { font-family: var(--font-display); font-size: 26px; text-transform: uppercase; line-height: 1; }
+.resumen { color: var(--muted-foreground); white-space: pre-line; }
+.datos .btn { justify-self: start; margin-top: 8px; }
+
+/* Visor del anuncio a pantalla completa */
+.visor { margin: 0; width: 100%; max-width: none; height: 100dvh; max-height: none; padding: 0; border: 0; background: rgba(3, 6, 12, 0.94); color: var(--foreground); }
+.visor::backdrop { background: transparent; }
+.visor[open] { display: grid; grid-template-rows: auto 1fr; }
+.visor-top { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 14px 16px; }
+.visor-titulo { font-family: var(--font-display); font-size: 22px; text-transform: uppercase; }
+.cerrar { width: 44px; height: 44px; flex-shrink: 0; display: grid; place-items: center; background: none; border: 1px solid var(--border); color: var(--foreground); cursor: pointer; }
+.cerrar svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; fill: none; }
+.cerrar:hover, .cerrar:focus-visible { border-color: var(--accent); color: var(--accent); }
+.visor-escena { display: grid; place-items: center; min-height: 0; padding: 0 16px 16px; }
+.visor-escena img { max-width: 100%; max-height: calc(100dvh - 90px); width: auto; height: auto; object-fit: contain; user-select: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .afiche img, .torneo, .lupa { transition: none; }
+}

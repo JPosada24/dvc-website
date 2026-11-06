@@ -18,6 +18,11 @@ export interface Torneo {
   id: string; nombre: string; rama: string; fecha_inicio: string; fecha_fin: string;
   fecha_limite_inscripcion: string; lugar: string | null; valor_inscripcion: number; cupos_libres: number;
 }
+/** Torneo ya jugado. `anuncio`: versión del afiche (null = sin anuncio); `album_id` solo si el álbum se ve. */
+export interface TorneoRealizado {
+  id: string; nombre: string; fecha: string; lugar: string | null; resumen: string | null; album_id: string | null;
+  anuncio: string | null; anuncio_ancho: number | null; anuncio_alto: number | null;
+}
 export interface Cifras {
   deportistas_activos: number; femenina: number; masculina: number;
   entrenamientos_semana: number; torneos_anio: number; anios: number | null;
@@ -30,6 +35,7 @@ export interface Perfil {
 export interface DatosClub {
   perfil: Perfil | null;
   cifras: Cifras | null; albumes: Album[]; videos: Video[]; equipo: Integrante[]; torneos: Torneo[];
+  torneosRealizados: TorneoRealizado[];
 }
 
 export interface Inscripcion {
@@ -47,6 +53,8 @@ export class ClubApi {
 
   /** null mientras carga o si la plataforma no está disponible: las secciones usan su contenido fijo. */
   readonly datos = signal<DatosClub | null>(null);
+  /** Álbum que otra sección pidió abrir (p. ej. «Ver fotos» de un torneo realizado); la galería lo atiende. */
+  readonly albumPedido = signal<string | null>(null);
 
   constructor() {
     if (!isPlatformBrowser(inject(PLATFORM_ID)) || !this.base) return;
@@ -65,7 +73,7 @@ export class ClubApi {
     try {
       const r = await fetch(`${this.base}/api/v1/publico/club`, { credentials: 'omit' });
       if (!r.ok) return; // sitio aún no publicado en la plataforma, o caída: queda el contenido fijo
-      const d = (await r.json()) as DatosClub;
+      const d = (await r.json()) as Omit<DatosClub, 'torneosRealizados'> & { torneos_realizados?: TorneoRealizado[] };
       this.datos.set({
         perfil: d.perfil ?? null,
         cifras: d.cifras ?? null,
@@ -73,6 +81,7 @@ export class ClubApi {
         videos: (d.videos ?? []).filter((v) => ID_YOUTUBE.test(v.youtube_id)),
         equipo: d.equipo ?? [],
         torneos: d.torneos ?? [],
+        torneosRealizados: d.torneos_realizados ?? [],
       });
     } catch {
       // Sin conexión con la plataforma: no pasa nada, el sitio sigue con su contenido fijo.
@@ -100,6 +109,13 @@ export class ClubApi {
   fotoIntegrante(i: Integrante): string | null {
     return i.foto && /^[0-9a-f]{8}$/.test(i.foto)
       ? `${this.base}/api/v1/publico/equipo/${encodeURIComponent(i.id)}/foto?v=${i.foto}`
+      : null;
+  }
+
+  /** Anuncio (afiche) de un torneo realizado; ?v= cambia con cada anuncio nuevo. */
+  anuncio(t: TorneoRealizado, tam: 'mini' | 'grande'): string | null {
+    return t.anuncio && /^[0-9a-f]{8}$/.test(t.anuncio)
+      ? `${this.base}/api/v1/publico/torneos-realizados/${encodeURIComponent(t.id)}/anuncio?tam=${tam}&v=${t.anuncio}`
       : null;
   }
 
