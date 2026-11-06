@@ -66,8 +66,13 @@
 
     <dialog #visor class="viewer" aria-label="Foto ampliada" (close)="indice.set(null)">
       @if (foto(); as f) {
-        <img [src]="api.foto(f, 'grande')" [attr.width]="f.ancho" [attr.height]="f.alto"
-             [alt]="'Foto ' + (indice()! + 1) + ' de ' + album()!.nombre" />
+        <!-- La miniatura (ya descargada en la cuadrícula) se ve al instante; la grande aparece entera al llegar. -->
+        <div class="viewer-foto">
+          <img class="previa" [src]="api.foto(f, 'mini')" alt="" aria-hidden="true" [attr.width]="f.ancho" [attr.height]="f.alto" />
+          <img class="grande" [class.lista]="cargadas().has(f.id)" (load)="marcarCargada(f.id)"
+               [src]="api.foto(f, 'grande')" [attr.width]="f.ancho" [attr.height]="f.alto"
+               [alt]="'Foto ' + (indice()! + 1) + ' de ' + album()!.nombre" />
+        </div>
         <div class="viewer-bar">
           <span>{{ album()!.nombre }} · {{ indice()! + 1 }}/{{ album()!.fotos.length }}</span>
           <div class="viewer-actions">

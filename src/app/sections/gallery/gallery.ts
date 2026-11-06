@@ -25,6 +25,8 @@ export class Gallery {
     return a && i !== null ? (a.fotos[i] ?? null) : null;
   });
   protected readonly fecha = partesFecha;
+  /** Fotos grandes ya descargadas: se muestran sin transición de carga. */
+  protected readonly cargadas = signal<ReadonlySet<string>>(new Set());
 
   protected abrirAlbum(a: Album): void {
     this.album.set(a);
@@ -44,6 +46,22 @@ export class Gallery {
   protected ampliar(i: number): void {
     this.indice.set(i);
     this.visor()?.nativeElement.showModal();
+    this.precargarVecinas();
+  }
+
+  protected marcarCargada(id: string): void {
+    if (!this.cargadas().has(id)) this.cargadas.update((s) => new Set(s).add(id));
+  }
+
+  /** Descarga en segundo plano la foto anterior y la siguiente: al pasar con ‹ › ya están listas. */
+  private precargarVecinas(): void {
+    const a = this.album();
+    const i = this.indice();
+    if (!a || i === null || a.fotos.length < 2) return;
+    for (const paso of [1, -1]) {
+      const f = a.fotos[(i + paso + a.fotos.length) % a.fotos.length];
+      if (f && !this.cargadas().has(f.id)) new Image().src = this.api.foto(f, 'grande');
+    }
   }
 
   protected cerrar(): void {
@@ -55,5 +73,6 @@ export class Gallery {
     const i = this.indice();
     if (!a || i === null || !this.visor()?.nativeElement.open) return;
     this.indice.set((i + paso + a.fotos.length) % a.fotos.length);
+    this.precargarVecinas();
   }
 }
