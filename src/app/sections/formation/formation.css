@@ -28,7 +28,7 @@
 }
 @media (hover: hover) { .zone:hover { background: rgba(var(--primary-rgb), 0.08); } }
 .num { font-family: var(--font-display); font-size: 56px; line-height: 0.9; color: #f5b731; }
-.zone.front .num { color: var(--accent); }
+.zone.front .num { color: var(--foreground); } /* el acento del tema se parece al oro: blanco las distingue */
 .zone h3 { font-size: 17px; font-weight: 700; }
 .zone p { color: var(--muted-foreground); font-size: 15px; }
 
@@ -36,6 +36,42 @@
 .legend { margin-top: 24px; display: flex; flex-wrap: wrap; gap: 10px 26px; font-size: 13px; color: var(--muted-foreground); }
 .legend span { display: inline-flex; align-items: center; gap: 8px; }
 .dot { width: 10px; height: 10px; }
-.dot.front { background: var(--accent); }
+.dot.front { background: var(--foreground); }
 .dot.back { background: #f5b731; }
 .dash { width: 22px; border-top: 1px dashed rgba(255, 255, 255, 0.6); }
+
+/* Celular: media cancha a escala en vez de seis cuadros apilados; en pantallas anchas, la cancha completa. */
+.movil { display: block; }
+.escritorio { display: none; }
+@media (min-width: 640px) {
+  .movil { display: none; }
+  .escritorio { display: block; }
+  .court.escritorio { display: grid; }
+}
+
+/* 9 m × 9 m: cuadrada; la línea de ataque está a 3 m de la red (un tercio). */
+.mini { display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: 1fr 2fr; aspect-ratio: 1;
+  max-width: 420px; margin-inline: auto; border: 2px solid rgba(245, 241, 236, 0.75); border-top: 0;
+  background: rgba(var(--primary-rgb), 0.05); }
+.movil .net { max-width: 420px; margin-inline: auto; }
+.mini-zona { display: grid; place-items: center; font-family: var(--font-display); font-size: 40px; line-height: 1;
+  color: #f5b731; background: transparent; border: 0; border-right: 1px solid rgba(255, 255, 255, 0.12);
+  cursor: pointer; transition: background 0.2s, color 0.2s; -webkit-tap-highlight-color: transparent; }
+.mini-zona:nth-child(3n) { border-right: 0; }
+.mini-zona.front { color: var(--foreground); border-bottom: 1px dashed rgba(255, 255, 255, 0.45); }
+.mini-zona.activa { background: rgba(var(--primary-rgb), 0.3); box-shadow: inset 0 0 0 2px #f5b731; }
+.mini-zona:focus-visible { outline: 2px solid #f5b731; outline-offset: -4px; }
+
+.detalle { display: grid; grid-template-columns: auto 1fr; gap: 16px; align-items: start; max-width: 420px;
+  margin: 20px auto 0; padding: 18px 18px 20px; border: 1px solid rgba(255, 255, 255, 0.14);
+  border-left: 3px solid #f5b731; }
+.detalle.front { border-left-color: var(--foreground); }
+.detalle.front .num { color: var(--foreground); }
+.detalle h3 { font-size: 17px; font-weight: 700; margin-top: 2px; }
+.detalle p { color: var(--muted-foreground); font-size: 15px; }
+.detalle .paso { font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; }
+.siguiente { display: flex; justify-content: center; gap: 8px; width: 100%; max-width: 420px; margin: 12px auto 0;
+  padding: 12px 16px; font: inherit; font-size: 14px; font-weight: 600; color: var(--foreground);
+  background: transparent; border: 1px solid rgba(255, 255, 255, 0.2); cursor: pointer; }
+.siguiente:focus-visible { outline: 2px solid #f5b731; outline-offset: 2px; }
+@media (hover: hover) { .siguiente:hover { background: rgba(var(--primary-rgb), 0.1); } }

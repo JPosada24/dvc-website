@@ -1,4 +1,4 @@
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { ClubApi, Etapa } from '../../club-api';
 
 /** Etapas fijas (zona 1 a 6). Se reemplazan por las del panel (Perfil del club → La formación) si existen. */
@@ -32,4 +32,15 @@ export class Formation {
     const etapas = propias?.length === 6 ? propias : ETAPAS;
     return ORDEN.map((n) => ({ n, ...(etapas[n - 1] ?? ETAPAS[n - 1]!) }));
   });
+
+  /** Celular: la zona que se está leyendo (se empieza por la 1, donde se entra al club). */
+  protected readonly elegida = signal(1);
+  protected readonly detalle = computed(() => {
+    const z = this.zonas().find((x) => x.n === this.elegida());
+    return z ? { ...z, front: [2, 3, 4].includes(z.n) } : null;
+  });
+
+  protected siguiente(): void {
+    this.elegida.update((n) => (n % 6) + 1);
+  }
 }

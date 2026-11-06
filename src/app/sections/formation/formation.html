@@ -3,9 +3,36 @@
     <h2 id="titulo-formacion" class="title">La formación va por <span class="text-fire">rotaciones</span></h2>
     <p class="intro">{{ intro() }}</p>
 
+    <!-- En el celular: media cancha a escala (cuadrada, la línea de ataque a un tercio de la red) con solo los
+         números; se toca una zona y su etapa se lee debajo. Así sigue viéndose como una cancha. -->
+    <div class="movil">
+      <div class="net" aria-hidden="true"></div>
+      <div class="mini" role="group" aria-label="Zonas de la cancha">
+        @for (z of zonas(); track z.n; let i = $index) {
+          <button type="button" class="mini-zona" [class.front]="i < 3" [class.activa]="z.n === elegida()"
+                  [attr.aria-pressed]="z.n === elegida()" [attr.aria-label]="'Zona ' + z.n + ': ' + z.titulo"
+                  (click)="elegida.set(z.n)">{{ z.n }}</button>
+        }
+      </div>
+      @if (detalle(); as d) {
+        <div class="detalle" [class.front]="d.front" aria-live="polite">
+          <span class="num" aria-hidden="true">{{ d.n }}</span>
+          <div>
+            <p class="paso">Zona {{ d.n }} · etapa {{ d.n }} de 6</p>
+            <h3>{{ d.titulo }}</h3>
+            <p>{{ d.texto }}</p>
+          </div>
+        </div>
+        <button type="button" class="siguiente" (click)="siguiente()">
+          {{ d.n < 6 ? 'Siguiente etapa: zona ' + (d.n + 1) : 'Volver a la zona 1' }}
+          <span aria-hidden="true">→</span>
+        </button>
+      }
+    </div>
+
     <!-- La cancha: la red va arriba, la fila de arriba está junto a ella y la línea punteada es la de ataque. -->
-    <div class="net" aria-hidden="true"></div>
-    <ol class="court">
+    <div class="net escritorio" aria-hidden="true"></div>
+    <ol class="court escritorio">
       @for (z of zonas(); track z.n; let i = $index) {
         <li class="zone" [class.front]="i < 3" [attr.aria-label]="'Zona ' + z.n + ': ' + z.titulo">
           <span class="num" aria-hidden="true">{{ z.n }}</span>
