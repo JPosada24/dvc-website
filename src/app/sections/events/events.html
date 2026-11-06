@@ -19,7 +19,15 @@
     @if (torneos().length) {
       <ul class="tournaments">
         @for (t of torneos(); track t.id) {
-          <li class="tournament">
+          <li class="tournament" [class.con-flyer]="api.flyer(t, 'mini')">
+            @if (api.flyer(t, 'mini'); as src) {
+              <button type="button" class="flyer" (click)="ampliar(t)" [attr.aria-label]="'Ver el anuncio de ' + t.nombre">
+                <img [src]="src" alt="" loading="lazy" decoding="async" [attr.width]="t.anuncio_ancho" [attr.height]="t.anuncio_alto" />
+                <span class="lupa" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7" /><path d="m20 20-4-4M11 8v6M8 11h6" /></svg>
+                </span>
+              </button>
+            }
             <div class="date" aria-hidden="true">
               <b>{{ fecha(t.fecha_inicio).dia }}</b><span>{{ fecha(t.fecha_inicio).mes }}</span>
             </div>
@@ -59,6 +67,25 @@
       </div>
     }
   </div>
+
+  <!-- Flyer del torneo a pantalla completa -->
+  <dialog #visor class="visor" aria-label="Anuncio del torneo" (close)="alCerrarVisor()" (click)="clicFondo($event)">
+    @if (ampliado(); as t) {
+      <div class="visor-top">
+        <span class="visor-titulo">{{ t.nombre }}</span>
+        <div class="visor-acciones">
+          <button type="button" class="btn btn-fire btn-small" (click)="inscribirDesdeVisor(t)"><span>Inscribir mi club</span></button>
+          <button type="button" class="close" (click)="cerrarVisor()" aria-label="Cerrar">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12" /></svg>
+          </button>
+        </div>
+      </div>
+      <div class="visor-escena" (click)="clicFondo($event)">
+        <img [src]="api.flyer(t, 'grande')" [alt]="'Anuncio de ' + t.nombre"
+             [attr.width]="t.anuncio_ancho" [attr.height]="t.anuncio_alto" draggable="false" />
+      </div>
+    }
+  </dialog>
 
   <!-- Inscripción de un club externo: se envía a la plataforma Dragones. -->
   <dialog #dialogo class="sheet" aria-labelledby="titulo-inscripcion" (close)="elegido.set(null)">

@@ -1,4 +1,4 @@
-import { Component, ElementRef, computed, inject, signal, viewChild } from '@angular/core';
+import { Component, DOCUMENT, ElementRef, computed, inject, signal, viewChild } from '@angular/core';
 import { ClubApi, Torneo, partesFecha, pesos } from '../../club-api';
 
 const RAMAS: Record<string, string> = { femenina: 'Rama femenina', masculina: 'Rama masculina', mixta: 'Mixto' };
@@ -9,8 +9,12 @@ const RAMAS: Record<string, string> = { femenina: 'Rama femenina', masculina: 'R
   styleUrl: './events.css',
 })
 export class Events {
-  private readonly api = inject(ClubApi);
+  protected readonly api = inject(ClubApi);
+  private readonly doc = inject(DOCUMENT);
   private readonly dialogo = viewChild<ElementRef<HTMLDialogElement>>('dialogo');
+  private readonly visor = viewChild<ElementRef<HTMLDialogElement>>('visor');
+  /** Torneo cuyo flyer se ve a pantalla completa. */
+  protected readonly ampliado = signal<Torneo | null>(null);
 
   /** Torneos con inscripciones abiertas en la plataforma; vacío = se muestra el texto fijo. */
   protected readonly torneos = computed(() => this.api.datos()?.torneos ?? []);
@@ -32,6 +36,33 @@ export class Events {
 
   protected cerrar(): void {
     this.dialogo()?.nativeElement.close();
+  }
+
+  protected ampliar(t: Torneo): void {
+    this.ampliado.set(t);
+    this.visor()?.nativeElement.showModal();
+    this.doc.documentElement.style.overflow = 'hidden'; // la página de fondo no se desplaza
+  }
+
+  protected cerrarVisor(): void {
+    this.visor()?.nativeElement.close();
+  }
+
+  /** Al cerrarse el visor (botón, Esc o clic fuera). */
+  protected alCerrarVisor(): void {
+    this.ampliado.set(null);
+    this.doc.documentElement.style.overflow = '';
+  }
+
+  /** Clic en el fondo (no en el flyer): cierra. */
+  protected clicFondo(e: MouseEvent): void {
+    if (e.target === e.currentTarget) this.cerrarVisor();
+  }
+
+  /** Desde el visor: cierra el flyer y abre la inscripción de ese torneo. */
+  protected inscribirDesdeVisor(t: Torneo): void {
+    this.cerrarVisor();
+    this.abrir(t);
   }
 
   protected async enviar(e: SubmitEvent): Promise<void> {

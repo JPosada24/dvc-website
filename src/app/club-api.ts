@@ -17,6 +17,7 @@ export interface Etapa { titulo: string; texto: string; }
 export interface Torneo {
   id: string; nombre: string; rama: string; fecha_inicio: string; fecha_fin: string;
   fecha_limite_inscripcion: string; lugar: string | null; valor_inscripcion: number; cupos_libres: number;
+  anuncio?: string | null; anuncio_ancho?: number | null; anuncio_alto?: number | null;
 }
 /** Torneo ya jugado. `anuncio`: versión del afiche (null = sin anuncio); `album_id` solo si el álbum se ve. */
 export interface TorneoRealizado {
@@ -116,6 +117,13 @@ export class ClubApi {
   anuncio(t: TorneoRealizado, tam: 'mini' | 'grande'): string | null {
     return t.anuncio && /^[0-9a-f]{8}$/.test(t.anuncio)
       ? `${this.base}/api/v1/publico/torneos-realizados/${encodeURIComponent(t.id)}/anuncio?tam=${tam}&v=${t.anuncio}`
+      : null;
+  }
+
+  /** Flyer de un torneo con inscripciones abiertas; ?v= cambia con cada flyer nuevo. */
+  flyer(t: Torneo, tam: 'mini' | 'grande'): string | null {
+    return t.anuncio && /^[0-9a-f]{8}$/.test(t.anuncio)
+      ? `${this.base}/api/v1/publico/torneos/${encodeURIComponent(t.id)}/anuncio?tam=${tam}&v=${t.anuncio}`
       : null;
   }
 
