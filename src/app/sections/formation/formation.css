@@ -26,7 +26,7 @@
   /* Línea de ataque entre las zonas de la red y las de fondo. */
   .zone.front { border-bottom: 1px dashed rgba(255, 255, 255, 0.3); }
 }
-@media (hover: hover) { .zone:hover { background: rgba(217, 84, 0, 0.08); } }
+@media (hover: hover) { .zone:hover { background: rgba(var(--primary-rgb), 0.08); } }
 .num { font-family: var(--font-display); font-size: 56px; line-height: 0.9; color: #f5b731; }
 .zone.front .num { color: var(--accent); }
 .zone h3 { font-size: 17px; font-weight: 700; }

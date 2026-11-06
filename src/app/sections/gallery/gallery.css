@@ -19,11 +19,11 @@
 
 /* Dos hojas detrás de la portada insinúan que es un álbum */
 .pila { position: relative; display: block; isolation: isolate; }
-.pila::before, .pila::after { content: ""; position: absolute; inset: 0; z-index: -1; border: 1px solid rgba(247, 127, 0, 0.22); background: var(--card); transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1); }
+.pila::before, .pila::after { content: ""; position: absolute; inset: 0; z-index: -1; border: 1px solid rgba(var(--accent-rgb), 0.22); background: var(--card); transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1); }
 .pila::before { transform: rotate(-3deg) translate(-5px, 6px); }
 .pila::after { transform: rotate(2deg) translate(6px, 3px); background: #0d121c; }
 
-.cover { position: relative; display: block; aspect-ratio: 4 / 3; overflow: hidden; border: 1px solid rgba(217, 84, 0, 0.35); background: var(--card); box-shadow: 0 20px 40px -24px rgba(0, 0, 0, 0.9); }
+.cover { position: relative; display: block; aspect-ratio: 4 / 3; overflow: hidden; border: 1px solid rgba(var(--primary-rgb), 0.35); background: var(--card); box-shadow: 0 20px 40px -24px rgba(0, 0, 0, 0.9); }
 .cover img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: saturate(0.85) brightness(0.9); transition: transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1), filter 0.4s ease; }
 .cover::before { content: ""; position: absolute; inset: 0; z-index: 1; background: linear-gradient(to top, rgba(3, 6, 12, 0.92) 0%, rgba(3, 6, 12, 0.35) 45%, rgba(3, 6, 12, 0) 70%); }
 /* Barra de fuego que sube al pasar el mouse */
@@ -74,7 +74,7 @@
 @media (min-width: 640px) { .videos { grid-template-columns: repeat(2, 1fr); } }
 @media (min-width: 1024px) { .videos { grid-template-columns: repeat(3, 1fr); } }
 .video { display: grid; gap: 12px; }
-.poster { position: relative; display: block; aspect-ratio: 16 / 9; overflow: hidden; background: var(--card); transform: skewX(-3deg); border: 1px solid rgba(217, 84, 0, 0.3); }
+.poster { position: relative; display: block; aspect-ratio: 16 / 9; overflow: hidden; background: var(--card); transform: skewX(-3deg); border: 1px solid rgba(var(--primary-rgb), 0.3); }
 .poster img { width: 100%; height: 100%; object-fit: cover; transform: skewX(3deg) scale(1.06); }
 .play { position: absolute; inset: 0; display: grid; place-items: center; }
 .play svg { width: 56px; height: 56px; padding: 14px; fill: var(--primary-foreground); background-image: var(--gradient-fire); box-shadow: var(--shadow-ember); }

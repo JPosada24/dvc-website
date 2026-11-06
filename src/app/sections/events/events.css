@@ -18,7 +18,7 @@
   .tournament { grid-template-columns: auto 1fr auto; padding: 30px 32px; }
   .tournament .btn { grid-column: auto; margin: 0; }
 }
-.date { display: grid; justify-items: center; min-width: 72px; padding: 10px 8px; border: 1px solid rgba(247, 127, 0, 0.45); }
+.date { display: grid; justify-items: center; min-width: 72px; padding: 10px 8px; border: 1px solid rgba(var(--accent-rgb), 0.45); }
 .date b { font-family: var(--font-display); font-weight: 400; font-size: 40px; line-height: 1; }
 .date span { font-size: 11px; font-weight: 700; letter-spacing: 0.24em; text-transform: uppercase; color: var(--accent); }
 .info .rama { font-size: 11px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); }
@@ -28,7 +28,7 @@
 .info .cupos.full { color: #ffb347; }
 
 /* Ventana de inscripción */
-.sheet { margin: auto; width: min(640px, calc(100% - 32px)); max-height: calc(100dvh - 32px); padding: 28px; border: 1px solid rgba(247, 127, 0, 0.35); background: var(--card); color: var(--foreground); box-shadow: var(--shadow-ember); }
+.sheet { margin: auto; width: min(640px, calc(100% - 32px)); max-height: calc(100dvh - 32px); padding: 28px; border: 1px solid rgba(var(--accent-rgb), 0.35); background: var(--card); color: var(--foreground); box-shadow: var(--shadow-ember); }
 .sheet::backdrop { background: rgba(3, 6, 12, 0.8); backdrop-filter: blur(4px); }
 .sheet-head { display: flex; justify-content: space-between; gap: 16px; }
 .sheet-head h3 { margin-top: 8px; font-family: var(--font-display); font-size: 30px; text-transform: uppercase; line-height: 1; }
@@ -48,5 +48,5 @@
 .trap { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
 .actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 12px; margin-top: 8px; }
 .err { padding: 12px 14px; border-left: 3px solid #ff6b4a; background: rgba(255, 107, 74, 0.1); color: #ffb3a1; }
-.ok { margin: 24px 0; padding: 14px 16px; border-left: 3px solid var(--accent); background: rgba(247, 127, 0, 0.1); }
+.ok { margin: 24px 0; padding: 14px 16px; border-left: 3px solid var(--accent); background: rgba(var(--accent-rgb), 0.1); }
 .btn:disabled { opacity: 0.6; cursor: default; }

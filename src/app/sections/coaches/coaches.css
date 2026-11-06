@@ -25,5 +25,5 @@
 .person .role { margin-top: 4px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.18em; color: var(--accent); }
 .person .bio { margin-top: 10px; color: var(--muted-foreground); }
 /* Foto del entrenador: mismo corte inclinado que el distintivo de iniciales. */
-.badge.photo { width: 72px; height: 72px; overflow: hidden; padding: 0; border: 2px solid rgba(247, 127, 0, 0.6); background: var(--secondary); }
+.badge.photo { width: 72px; height: 72px; overflow: hidden; padding: 0; border: 2px solid rgba(var(--accent-rgb), 0.6); background: var(--secondary); }
 .badge.photo img { width: 100%; height: 100%; object-fit: cover; transform: skewX(8deg) scale(1.15); }

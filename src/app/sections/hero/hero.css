@@ -26,13 +26,13 @@ h1 { font-family: var(--font-display); font-size: clamp(44px, 11vw, 96px); text-
 /* Foto horizontal inclinada con esquinas decorativas */
 .hero-frame { position: relative; margin: 0 auto; width: 100%; max-width: 40rem; }
 @media (min-width: 1100px) { .hero-frame { max-width: 600px; margin: 0 0 0 auto; } }
-.skewbox { position: relative; z-index: 20; transform: skewX(-3deg); overflow: hidden; border-radius: 2px; border: 2px solid rgba(217, 84, 0, 0.3); box-shadow: var(--shadow-ember), 0 0 60px rgba(217, 84, 0, 0.18); }
+.skewbox { position: relative; z-index: 20; transform: skewX(-3deg); overflow: hidden; border-radius: 2px; border: 2px solid rgba(var(--primary-rgb), 0.3); box-shadow: var(--shadow-ember), 0 0 60px rgba(var(--primary-rgb), 0.18); }
 .skewbox picture { display: block; }
 /* Foto del equipo en 4:3 para que no se corten las cabezas de la fila de atrás;
    el zoom mínimo (1.06) solo tapa las esquinas que deja la inclinación. */
 .skewbox img { display: block; width: 100%; height: auto; aspect-ratio: 4/3; transform: skewX(3deg) scale(1.06); object-fit: cover; object-position: center 45%; }
 /* Velo oscuro y cálido para integrar la foto (fondo claro) con el diseño oscuro. */
-.skewbox::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(to top, rgba(3, 6, 12, 0.5), rgba(3, 6, 12, 0) 45%), linear-gradient(135deg, rgba(217, 84, 0, 0.12), rgba(3, 6, 12, 0.15)); }
+.skewbox::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(to top, rgba(3, 6, 12, 0.5), rgba(3, 6, 12, 0) 45%), linear-gradient(135deg, rgba(var(--primary-rgb), 0.12), rgba(3, 6, 12, 0.15)); }
 .corner-tr { position: absolute; top: -24px; right: -24px; z-index: 30; height: 112px; width: 112px; border-top: 4px solid var(--accent); border-right: 4px solid var(--accent); }
 .corner-bl { position: absolute; bottom: -24px; left: -24px; z-index: 30; height: 112px; width: 112px; border-bottom: 4px solid var(--primary); border-left: 4px solid var(--primary); }
 @media (max-width: 767px) {

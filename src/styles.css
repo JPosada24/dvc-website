@@ -1,3 +1,50 @@
+/*
+ * Paletas de marca. La activa se elige con data-paleta en <html> (src/index.html y public/politica-de-datos.html).
+ * Cada paleta define solo los colores "de fuego"; el resto del diseño los toma de aquí.
+ *   --fire-light / --fire-deep  degradado de títulos destacados, botones y barras
+ *   --primary                   color fuerte: bordes, esquinas, fondo de tarjetas al pasar el mouse
+ *   --accent                    color de detalle: kickers, enlace activo, cifras
+ *   --ember-rgb                 brasa oscura del fondo de la sección de inscripción
+ *   --*-rgb                     el mismo color en canales, para usarlo con transparencia: rgba(var(--primary-rgb), 0.3)
+ */
+
+/* Fuego: la paleta original del sitio (naranja). */
+:root,
+:root[data-paleta="fuego"] {
+  --fire-light: #ff9a2e;
+  --fire-deep: #e05206;
+  --primary: #d95400;
+  --primary-rgb: 217, 84, 0;
+  --primary-foreground: #120803;
+  --accent: #f77f00;
+  --accent-rgb: 247, 127, 0;
+  --ember-rgb: 84, 41, 16;
+}
+
+/* Dorado y vinotinto (en prueba). */
+:root[data-paleta="dorado-vinotinto"] {
+  --fire-light: #f6d98e;
+  --fire-deep: #c9952f;
+  --primary: #8f1d30;
+  --primary-rgb: 143, 29, 48;
+  --primary-foreground: #1c1206;
+  --accent: #e3b552;
+  --accent-rgb: 227, 181, 82;
+  --ember-rgb: 92, 14, 32;
+}
+
+/* Dorado y rojo: tomados del pendón del club (brillo, tono medio y sombra del dorado; rojo del humo y los dragones). */
+:root[data-paleta="dorado-rojo"] {
+  --fire-light: #f7e26a;
+  --fire-deep: #cf931b;
+  --primary: #a8161b;
+  --primary-rgb: 168, 22, 27;
+  --primary-foreground: #1f1004;
+  --accent: #e7b84a;
+  --accent-rgb: 231, 184, 74;
+  --ember-rgb: 110, 18, 14;
+}
+
 /* Tokens de diseño */
 :root {
   --background: #03060c;
@@ -6,14 +53,11 @@
   --secondary: #131a29;
   --muted: #0d1420;
   --muted-foreground: #a79d91;
-  --primary: #d95400;
-  --primary-foreground: #120803;
-  --accent: #f77f00;
   --border: rgba(255, 255, 255, 0.12);
-  --gradient-fire: linear-gradient(135deg, #ff9a2e, #e05206);
-  --gradient-shell: radial-gradient(120% 90% at 50% 0%, rgba(84, 41, 16, 0.55), #03060c 70%);
-  --shadow-ember: 0 18px 50px -18px rgba(217, 84, 0, 0.55);
-  --shadow-glow: 0 0 40px rgba(217, 84, 0, 0.25);
+  --gradient-fire: linear-gradient(135deg, var(--fire-light), var(--fire-deep));
+  --gradient-shell: radial-gradient(120% 90% at 50% 0%, rgba(var(--ember-rgb), 0.55), #03060c 70%);
+  --shadow-ember: 0 18px 50px -18px rgba(var(--primary-rgb), 0.55);
+  --shadow-glow: 0 0 40px rgba(var(--primary-rgb), 0.25);
   --font-display: "Anton", system-ui, sans-serif;
   --font-sans: "Barlow", system-ui, sans-serif;
   --content-width: 1232px;
@@ -38,7 +82,7 @@ section[id] { scroll-margin-top: 72px; }
 /* Utilidades compartidas */
 .heading { font-family: var(--font-display); letter-spacing: 0.02em; text-transform: uppercase; line-height: 0.95; }
 .text-fire { background-image: var(--gradient-fire); -webkit-background-clip: text; background-clip: text; color: transparent; }
-.text-glow { text-shadow: 0 0 40px rgba(217, 84, 0, 0.35); }
+.text-glow { text-shadow: 0 0 40px rgba(var(--primary-rgb), 0.35); }
 .kicker { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.22em; color: var(--accent); }
 @media (min-width: 640px) { .kicker { letter-spacing: 0.3em; } }
 .muted { color: var(--muted-foreground); }
