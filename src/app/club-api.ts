@@ -30,7 +30,7 @@ export interface Cifras {
 }
 export interface Perfil {
   sede: string | null; mision: string | null; vision: string | null; historia: string | null;
-  whatsapp: string | null; correo: string | null; instagram: string | null; facebook: string | null;
+  whatsapp: string | null; correo: string | null; instagram: string | null; facebook: string | null; tiktok?: string | null;
   formacion_intro: string | null; formacion: Etapa[] | null;
 }
 export interface DatosClub {

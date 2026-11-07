@@ -17,6 +17,7 @@ export class Footer {
     const p = this.api.datos()?.perfil;
     const instagram = usuarioRed(p?.instagram);
     const facebook = usuarioRed(p?.facebook);
+    const tiktok = usuarioRed(p?.tiktok);
     const numero = numeroWhatsApp(p?.whatsapp);
     const correo = p?.correo && /^[^\s@<>"]+@[^\s@<>"]+\.[^\s@<>"]+$/.test(p.correo) ? p.correo : null;
     return [
@@ -24,6 +25,8 @@ export class Footer {
                          icono: ICONOS_REDES.instagram, externa: true }] : []),
       ...(facebook ? [{ red: 'Facebook', detalle: facebook, href: `https://www.facebook.com/${facebook}`,
                         icono: ICONOS_REDES.facebook, externa: true }] : []),
+      ...(tiktok ? [{ red: 'TikTok', detalle: '@' + tiktok, href: `https://www.tiktok.com/@${tiktok}`,
+                      icono: ICONOS_REDES.tiktok, externa: true }] : []),
       { red: 'WhatsApp', detalle: 'Escríbenos', href: numero ? enlaceWhatsApp(numero) : WHATSAPP_URL,
         icono: ICONOS_REDES.whatsapp, externa: true },
       ...(correo ? [{ red: 'Correo', detalle: correo, href: `mailto:${correo}`, externa: false,
